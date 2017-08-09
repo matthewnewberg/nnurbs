@@ -13,7 +13,7 @@ namespace NN.Geometry
         public RevSurface()
         { }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public RevSurface(Rhino.Geometry.RevSurface f)
         {
             CopyFrom(f);

@@ -17,7 +17,7 @@ namespace NN.Geometry
     internal Point3d m_max;
     #endregion
         
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public BoundingBox(Rhino.Geometry.BoundingBox f)
         {
             this.m_min = new Point3d(f.Min);

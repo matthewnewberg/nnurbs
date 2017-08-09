@@ -13,7 +13,7 @@ namespace NN.Geometry
           : base()
         { }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public SumSurface(Rhino.Geometry.SumSurface f)
         {
             CopyFrom(f);

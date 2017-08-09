@@ -298,7 +298,7 @@ namespace NN.Geometry
         public Curve() { }
 
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
 
         public static Curve CreateCurve(Rhino.Geometry.Curve f)
         {

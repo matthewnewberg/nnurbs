@@ -95,7 +95,7 @@ namespace NN.DocObjects
     {
         public ObjectAttributes() { }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public ObjectAttributes(Rhino.DocObjects.ObjectAttributes f)
         {
             CopyFrom(f);

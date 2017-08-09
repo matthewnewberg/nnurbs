@@ -61,7 +61,7 @@ namespace NN.Geometry
 
 
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
 
         public static Surface CreateSurface(Rhino.Geometry.Surface f)
         {

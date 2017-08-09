@@ -19,7 +19,7 @@ namespace NN.Geometry
         {
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public PolylineCurve(Rhino.Geometry.PolylineCurve f)
         {
             CopyFrom(f);

@@ -1,0 +1,9 @@
+C:\Users\mnewb\Code\nnurbs\nnurbsImport\obj\Debug\nnurbsImport.csprojResolveAssemblyReference.cache
+C:\Users\mnewb\Code\nnurbs\nnurbsImport\bin\nnurbsImport.dll
+C:\Users\mnewb\Code\nnurbs\nnurbsImport\bin\nnurbsImport.pdb
+C:\Users\mnewb\Code\nnurbs\nnurbsImport\obj\Debug\nnurbsImport.dll
+C:\Users\mnewb\Code\nnurbs\nnurbsImport\obj\Debug\nnurbsImport.pdb
+C:\Users\mnewb\Code\nnurbs\nnurbsImport\bin\nnurbs.dll
+C:\Users\mnewb\Code\nnurbs\nnurbsImport\bin\System.Numerics.Vectors.dll
+C:\Users\mnewb\Code\nnurbs\nnurbsImport\bin\nnurbs.pdb
+C:\Users\mnewb\Code\nnurbs\nnurbsImport\bin\System.Numerics.Vectors.xml

@@ -29,7 +29,7 @@ namespace NN.Geometry
     }
 
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public ArcCurve(Rhino.Geometry.ArcCurve f)
         {
             CopyFrom(f);

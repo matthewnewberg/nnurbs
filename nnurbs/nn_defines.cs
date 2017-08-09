@@ -1196,7 +1196,7 @@ namespace NN.Geometry
         private uint m_type;
         private int m_index;
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public ComponentIndex(Rhino.Geometry.ComponentIndex f)
         {
 

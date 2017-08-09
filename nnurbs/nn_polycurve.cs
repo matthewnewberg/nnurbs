@@ -15,7 +15,7 @@ namespace NN.Geometry
             SegmentDomain = new System.Collections.Generic.List<Interval>();
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public PolyCurve(Rhino.Geometry.PolyCurve f)
         {
             CopyFrom(f);

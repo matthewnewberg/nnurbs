@@ -29,7 +29,7 @@ namespace NN.Geometry
         #endregion
 
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public Arc(Rhino.Geometry.Arc f)
         {
             this.m_plane = new Plane(f.Plane);

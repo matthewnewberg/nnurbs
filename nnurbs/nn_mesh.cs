@@ -379,7 +379,7 @@ namespace NN.Geometry
         }
 
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public Mesh(Rhino.Geometry.Mesh f)
         {
             CopyFrom(f);
@@ -543,7 +543,7 @@ namespace NN.Geometry.Collections
         {
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public MeshVertexList(Rhino.Geometry.Collections.MeshVertexList rhinoVerts)
         {
             this.Clear();
@@ -567,7 +567,7 @@ namespace NN.Geometry.Collections
         {
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public MeshTopologyVertexList(Rhino.Geometry.Collections.MeshTopologyVertexList rhinoVerts)
         {
             this.Clear();
@@ -590,7 +590,7 @@ namespace NN.Geometry.Collections
         {
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public MeshTopologyEdgeList(Rhino.Geometry.Collections.MeshTopologyEdgeList rhinoVerts)
         {
             // TODO
@@ -607,7 +607,7 @@ namespace NN.Geometry.Collections
         {
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public MeshVertexNormalList(Rhino.Geometry.Collections.MeshVertexNormalList rhinoNormals)
         {
             this.Clear();
@@ -631,7 +631,7 @@ namespace NN.Geometry.Collections
         {
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public MeshFaceList(Rhino.Geometry.Collections.MeshFaceList rhinoFaces)
         {
             this.Clear();
@@ -690,7 +690,7 @@ namespace NN.Geometry.Collections
     public class MeshFaceNormalList : System.Collections.Generic.List<Vector3f>, NN.Collections.IRhinoTable<Vector3f>
     {
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public MeshFaceNormalList(Rhino.Geometry.Collections.MeshFaceNormalList rhinoNormals)
         {
             this.Clear();
@@ -714,7 +714,7 @@ namespace NN.Geometry.Collections
     /// </summary>
     public class MeshVertexColorList : System.Collections.Generic.List<Color>, NN.Collections.IRhinoTable<Color>
     {
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public MeshVertexColorList(Rhino.Geometry.Collections.MeshVertexColorList rhinoColors)
         {
             this.Clear();
@@ -745,7 +745,7 @@ namespace NN.Geometry.Collections
     /// </summary>
     public class MeshTextureCoordinateList : System.Collections.Generic.List<Point2f>, NN.Collections.IRhinoTable<Point2f>
     {
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public MeshTextureCoordinateList(Rhino.Geometry.Collections.MeshTextureCoordinateList rhinoTexCords)
         {
             this.Clear();
@@ -784,7 +784,7 @@ namespace NN.Geometry
         internal int m_d;
         #endregion
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public MeshFace(Rhino.Geometry.MeshFace rhinoFace)
         {
             m_a = rhinoFace.A;

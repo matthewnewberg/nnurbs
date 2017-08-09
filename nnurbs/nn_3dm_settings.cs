@@ -381,7 +381,7 @@ namespace NN.FileIO
     {
 
         public File3dmSettings() { }
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public File3dmSettings(Rhino.FileIO.File3dmSettings f)
         {
             CopyFrom(f);

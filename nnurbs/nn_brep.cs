@@ -78,7 +78,7 @@ namespace NN.Geometry
 
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public Brep(Rhino.Geometry.Brep f)
         {
             CopyFrom(f);
@@ -303,7 +303,7 @@ namespace NN.Geometry
         }
 
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public BrepVertex(Rhino.Geometry.BrepVertex f)
         {
             CopyFrom(f);
@@ -363,7 +363,7 @@ namespace NN.Geometry
     public class BrepEdge : CurveProxy
     {
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public BrepEdge(Rhino.Geometry.BrepEdge f)
         {
             CopyFrom(f);
@@ -528,7 +528,7 @@ namespace NN.Geometry
         public BrepTrim() { }
 
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public BrepTrim(Rhino.Geometry.BrepTrim f)
         {
             CopyFrom(f);
@@ -660,7 +660,7 @@ namespace NN.Geometry
         {
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public BrepLoop(Rhino.Geometry.BrepLoop f)
         {
             CopyFrom(f);
@@ -726,7 +726,7 @@ namespace NN.Geometry
     {
         public BrepFace() { }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public BrepFace(Rhino.Geometry.BrepFace f)
         {
             CopyFrom(f);
@@ -801,7 +801,7 @@ namespace NN.Geometry.Collections
         { }
 
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public BrepVertexList(Rhino.Geometry.Collections.BrepVertexList f)
         {
             CopyFrom(f);
@@ -839,7 +839,7 @@ namespace NN.Geometry.Collections
         {
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public BrepFaceList(Rhino.Geometry.Collections.BrepFaceList f)
         {
             CopyFrom(f);
@@ -875,7 +875,7 @@ namespace NN.Geometry.Collections
         public BrepSurfaceList()
         { }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public BrepSurfaceList(Rhino.Geometry.Collections.BrepSurfaceList f)
         {
             CopyFrom(f);
@@ -920,7 +920,7 @@ namespace NN.Geometry.Collections
 
         public BrepCurveList() { Curves = new List<Curve>(); }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public BrepCurveList(Rhino.Geometry.Collections.BrepCurveList f)
         {
             Curves = new List<Curve>();
@@ -957,7 +957,7 @@ namespace NN.Geometry.Collections
         {
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public BrepEdgeList(Rhino.Geometry.Collections.BrepEdgeList f)
         {
             CopyFrom(f);

@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{83746C39-54FA-4120-9DFE-5C03A5FF4A81}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>nnurbs</RootNamespace>
+    <AssemblyName>nnurbs</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;RHINOCOMMON</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;RHINO3DMIO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="RhinoCommon">
+      <HintPath>..\..\..\..\..\Program Files\Rhino WIP\System\RhinoCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>nnurbs\packages\System.Numerics.Vectors.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="nn_3dm.cs" />
+    <Compile Include="nn_3dm_attributes.cs" />
+    <Compile Include="nn_3dm_properties.cs" />
+    <Compile Include="nn_3dm_settings.cs" />
+    <Compile Include="nn_annotation.cs" />
+    <Compile Include="nn_annotation2.cs" />
+    <Compile Include="nn_arc.cs" />
+    <Compile Include="nn_arccurve.cs" />
+    <Compile Include="nn_archive.cs" />
+    <Compile Include="nn_array.cs" />
+    <Compile Include="nn_base32.cs" />
+    <Compile Include="nn_base64.cs" />
+    <Compile Include="nn_beam.cs" />
+    <Compile Include="nn_bezier.cs" />
+    <Compile Include="nn_bitmap.cs" />
+    <Compile Include="nn_bounding_box.cs" />
+    <Compile Include="nn_box.cs" />
+    <Compile Include="nn_brep.cs" />
+    <Compile Include="nn_circle.cs" />
+    <Compile Include="nn_color.cs" />
+    <Compile Include="nn_cone.cs" />
+    <Compile Include="nn_crc.cs" />
+    <Compile Include="nn_curve.cs" />
+    <Compile Include="nn_curveonsurface.cs" />
+    <Compile Include="nn_curveproxy.cs" />
+    <Compile Include="nn_cylinder.cs" />
+    <Compile Include="nn_defines.cs" />
+    <Compile Include="nn_detail.cs" />
+    <Compile Include="nn_dimstyle.cs" />
+    <Compile Include="nn_ellipse.cs" />
+    <Compile Include="nn_error.cs" />
+    <Compile Include="nn_evaluate_nurbs.cs" />
+    <Compile Include="nn_extensions.cs" />
+    <Compile Include="nn_font.cs" />
+    <Compile Include="nn_fpoint.cs" />
+    <Compile Include="nn_geometry.cs" />
+    <Compile Include="nn_gl.cs" />
+    <Compile Include="nn_group.cs" />
+    <Compile Include="nn_hatch.cs" />
+    <Compile Include="nn_iepsiloncomparable.cs" />
+    <Compile Include="nn_instance.cs" />
+    <Compile Include="nn_intersect.cs" />
+    <Compile Include="nn_intersectionevents.cs" />
+    <Compile Include="nn_knot.cs" />
+    <Compile Include="nn_layer.cs" />
+    <Compile Include="nn_light.cs" />
+    <Compile Include="nn_line.cs" />
+    <Compile Include="nn_linecurve.cs" />
+    <Compile Include="nn_linestyle.cs" />
+    <Compile Include="nn_linetype.cs" />
+    <Compile Include="nn_list.cs" />
+    <Compile Include="nn_lookup.cs" />
+    <Compile Include="nn_mapchan.cs" />
+    <Compile Include="nn_massprop.cs" />
+    <Compile Include="nn_material.cs" />
+    <Compile Include="nn_math.cs" />
+    <Compile Include="nn_matrix.cs" />
+    <Compile Include="nn_memory.cs" />
+    <Compile Include="nn_mesh.cs" />
+    <Compile Include="nn_mesh_marker.cs" />
+    <Compile Include="nn_nurbscurve.cs" />
+    <Compile Include="nn_nurbssurface.cs" />
+    <Compile Include="nn_object.cs" />
+    <Compile Include="nn_objref.cs" />
+    <Compile Include="nn_offsetsurface.cs" />
+    <Compile Include="nn_oject_history.cs" />
+    <Compile Include="nn_optimize.cs" />
+    <Compile Include="nn_plane.cs" />
+    <Compile Include="nn_planesurface.cs" />
+    <Compile Include="nn_pluginlist.cs" />
+    <Compile Include="nn_plus.cs" />
+    <Compile Include="nn_plus_registry.cs" />
+    <Compile Include="nn_point.cs" />
+    <Compile Include="nn_pointcloud.cs" />
+    <Compile Include="nn_pointgeometry.cs" />
+    <Compile Include="nn_pointgrid.cs" />
+    <Compile Include="nn_polycurve.cs" />
+    <Compile Include="nn_polyedgecurve.cs" />
+    <Compile Include="nn_polyline.cs" />
+    <Compile Include="nn_polylinecurve.cs" />
+    <Compile Include="nn_quaternion.cs" />
+    <Compile Include="nn_rectangle.cs" />
+    <Compile Include="nn_rendering.cs" />
+    <Compile Include="nn_revsurface.cs" />
+    <Compile Include="nn_rtree.cs" />
+    <Compile Include="nn_sphere.cs" />
+    <Compile Include="nn_string.cs" />
+    <Compile Include="nn_sumsurface.cs" />
+    <Compile Include="nn_surface.cs" />
+    <Compile Include="nn_surfaceproxy.cs" />
+    <Compile Include="nn_system.cs" />
+    <Compile Include="nn_textlog.cs" />
+    <Compile Include="nn_texture.cs" />
+    <Compile Include="nn_texture_mapping.cs" />
+    <Compile Include="nn_torus.cs" />
+    <Compile Include="nn_userdata.cs" />
+    <Compile Include="nn_uuid.cs" />
+    <Compile Include="nn_version.cs" />
+    <Compile Include="nn_viewport.cs" />
+    <Compile Include="nn_workspace.cs" />
+    <Compile Include="nn_x.cs" />
+    <Compile Include="nn_xform.cs" />
+    <Compile Include="nn_zlib.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+xcopy /s /y "$(SolutionDir)nnurbs\nnurbs\packages\Rhino3dmIO.dll-AnyCPU-Windows.5.1.30000.25\NativeBinaries\x86\*.*" "$(TargetDir)x86\"
+xcopy /s /y "$(SolutionDir)nnurbs\nnurbs\packages\Rhino3dmIO.dll-AnyCPU-Windows.5.1.30000.25\NativeBinaries\x64\*.*" "$(TargetDir)x64\"
+</PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -462,11 +462,21 @@ namespace NN.FileIO
         {
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public File3dm(Rhino.FileIO.File3dm f)
         {
             CopyFrom(f);
         }
+
+#if RHINOCOMMON
+        public File3dm(Rhino.RhinoDoc doc)
+        {
+            this.Objects = new File3dmObjectTable(doc);
+
+            // TODO Other settings
+        }
+#endif
+
         public bool CopyTo(Rhino.FileIO.File3dm to)
         {
             to.StartSectionComments = this.StartSectionComments;
@@ -493,6 +503,12 @@ namespace NN.FileIO
             return true;
         }
 
+#if RHINOCOMMON
+        public bool AddTo(Rhino.RhinoDoc doc)
+        {
+            return this.Objects.AddTo(doc);
+        }
+#endif
 
 
         public bool CopyFrom(Rhino.FileIO.File3dm from)
@@ -545,7 +561,7 @@ namespace NN.FileIO
         }
 
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON|| RHINOCOMMON
         public File3dmWriteOptions(Rhino.FileIO.File3dmWriteOptions f)
         {
             CopyFrom(f);
@@ -628,11 +644,20 @@ namespace NN.FileIO
 
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public File3dmObject(Rhino.FileIO.File3dmObject f)
         {
             CopyFrom(f);
         }
+
+#if RHINOCOMMON
+        public File3dmObject(Rhino.DocObjects.RhinoObject obj)
+        {
+            this.Geometry = GeometryBase.CreateGeometery(obj.Geometry);
+            this.Attributes = new NN.DocObjects.ObjectAttributes(obj.Attributes);
+            this.Name = obj.Name;
+        }
+#endif
 
         public bool CopyFrom(Rhino.FileIO.File3dmObject from)
         {
@@ -705,12 +730,22 @@ namespace NN.FileIO
     {
         public File3dmObjectTable() { }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public File3dmObjectTable(Rhino.FileIO.File3dmObjectTable f)
         {
             CopyFrom(f);
         }
+#if RHINOCOMMON
+        public File3dmObjectTable(Rhino.RhinoDoc doc)
+        {
+            this.Clear();
 
+            foreach (var o in doc.Objects)
+            {
+                this.Add(new File3dmObject(o));
+            }
+        }
+#endif
         public bool CopyFrom(Rhino.FileIO.File3dmObjectTable from)
         {
             this.Clear();
@@ -723,10 +758,82 @@ namespace NN.FileIO
             return true;
         }
 
-        public bool CopyTo(Rhino.FileIO.File3dmObjectTable to)
+#if RHINOCOMMON
+        public bool AddTo(Rhino.RhinoDoc to)
         {
+
+            foreach (var o in this)
+            {
+                Rhino.DocObjects.ObjectAttributes rhinoAttrib = o.Attributes.RhinoObject();
+
+                o.Attributes.CopyTo(rhinoAttrib);
+
+                var brep = o.Geometry as Brep;
+
+                if (brep != null)
+                {
+                    Rhino.Geometry.Brep rhinoBrep = new Rhino.Geometry.Brep();
+                    brep.CopyTo(rhinoBrep);
+                    to.Objects.AddBrep(rhinoBrep, rhinoAttrib);
+
+                    continue;
+                }
+
+                var nurbsSurface = o.Geometry as NurbsSurface;
+                if (nurbsSurface != null)
+                    to.Objects.AddSurface(nurbsSurface.RhinoObject(), rhinoAttrib);
+
+                var ext = o.Geometry as Extrusion;
+
+                if (ext != null)
+                    to.Objects.AddSurface(ext.RhinoObject(), rhinoAttrib);
+
+                var arcCurve = o.Geometry as ArcCurve;
+
+                if (arcCurve != null)
+                {
+                    to.Objects.AddArc(arcCurve.Arc.RhinoObject());
+                }
+
+                var nurbsCurve = o.Geometry as NurbsCurve;
+
+                if (nurbsCurve != null)
+                {
+                    to.Objects.AddCurve(nurbsCurve.RhinoObject());
+                }
+
+                var polycurve = o.Geometry as PolyCurve;
+
+                if (polycurve != null)
+                {
+                    to.Objects.AddCurve(polycurve.RhinoObject());
+                }
+
+                var polylinecurve = o.Geometry as PolylineCurve;
+
+                if (polylinecurve != null)
+                {
+                    to.Objects.AddCurve(polylinecurve.RhinoObject(), rhinoAttrib);
+                }
+
+                var mesh = o.Geometry as Mesh;
+
+                if (mesh != null)
+                    to.Objects.AddMesh(mesh.RhinoObject(), rhinoAttrib);
+            }
+
+            return true;
+
+        }
+#endif
+
+            public bool CopyTo(Rhino.FileIO.File3dmObjectTable to)
+        {
+
+#if RHINO3DMIO
             for (int i= to.Count-1; i>= 0; --i)
                 to.Delete(to[i]);
+#endif
 
             foreach (var o in this)
             {
@@ -792,7 +899,7 @@ namespace NN.FileIO
         }
 #endif
 
-        readonly File3dm m_parent;
+            readonly File3dm m_parent;
         internal File3dmObjectTable(File3dm parent)
         {
             m_parent = parent;
@@ -854,7 +961,7 @@ namespace NN.FileIO
         }
 
         public File3dmMaterialTable() { }
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON|| RHINOCOMMON
         public File3dmMaterialTable(IList<Rhino.DocObjects.Material> f)
         {
             CopyFrom(f);

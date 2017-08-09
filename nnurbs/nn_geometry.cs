@@ -12,7 +12,7 @@ namespace NN.Geometry
     {
         public GeometryBase() { }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
 
         public static GeometryBase CreateGeometery(Rhino.Geometry.GeometryBase f) { 
 

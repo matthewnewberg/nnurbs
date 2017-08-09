@@ -1,0 +1,8 @@
+C:\Users\mnewb\Code\nnurbs\nnurbs\bin\Debug\nnurbs.dll
+C:\Users\mnewb\Code\nnurbs\nnurbs\bin\Debug\nnurbs.pdb
+C:\Users\mnewb\Code\nnurbs\nnurbs\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\mnewb\Code\nnurbs\nnurbs\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\mnewb\Code\nnurbs\nnurbs\obj\Debug\nnurbs.dll
+C:\Users\mnewb\Code\nnurbs\nnurbs\obj\Debug\nnurbs.pdb
+C:\Users\mnewb\Code\nnurbs\nnurbs\bin\Debug\RhinoCommon.dll
+C:\Users\mnewb\Code\nnurbs\nnurbs\bin\Debug\RhinoCommon.xml

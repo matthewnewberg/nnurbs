@@ -159,7 +159,7 @@ namespace NN.Geometry
             this = other;
         }
         
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public Plane(Rhino.Geometry.Plane f)
         {
             this.m_origin = new Point3d(f.Origin.X, f.Origin.Y, f.Origin.Z);

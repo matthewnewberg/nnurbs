@@ -13,7 +13,7 @@ namespace NN.Geometry
         public NurbsCurve() { }
 
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public NurbsCurve(Rhino.Geometry.NurbsCurve f)
         {
             CopyFrom(f);
@@ -318,7 +318,7 @@ namespace NN.Geometry.Collections
 
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public NurbsCurveKnotList(Rhino.Geometry.Collections.NurbsCurveKnotList f)
         {
             CopyFrom(f);
@@ -388,7 +388,7 @@ namespace NN.Geometry.Collections
 
         public NurbsCurvePointList() { }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public NurbsCurvePointList(Rhino.Geometry.Collections.NurbsCurvePointList f)
         {
             CopyFrom(f);

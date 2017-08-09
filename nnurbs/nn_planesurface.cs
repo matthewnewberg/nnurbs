@@ -12,7 +12,7 @@ namespace NN.Geometry
         public PlaneSurface()
         { }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public PlaneSurface(Rhino.Geometry.PlaneSurface f)
         {
             CopyFrom(f);

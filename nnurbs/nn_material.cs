@@ -158,7 +158,7 @@ namespace NN.DocObjects
             Id = Guid.Empty;
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public Material(Rhino.DocObjects.Material m)
         {
             CopyFrom(m);

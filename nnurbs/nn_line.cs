@@ -84,7 +84,7 @@ namespace NN.Geometry
 
         #region constructors
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public Line(Rhino.Geometry.Line f)
         {
             this.m_to = new Point3d(f.To);

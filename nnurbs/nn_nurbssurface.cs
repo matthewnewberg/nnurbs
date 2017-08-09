@@ -14,7 +14,7 @@ namespace NN.Geometry
     [Serializable]
     public class NurbsSurface : Surface, IEpsilonComparable<NurbsSurface>
     {
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public NurbsSurface(Rhino.Geometry.NurbsSurface f)
         {
             CopyFrom(f);
@@ -238,7 +238,7 @@ namespace NN.Geometry.Collections
     public sealed class NurbsSurfacePointList : IEpsilonComparable<NurbsSurfacePointList>
     {
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public NurbsSurfacePointList(Rhino.Geometry.Collections.NurbsSurfacePointList f)
         {
 
@@ -417,7 +417,7 @@ namespace NN.Geometry.Collections
 
         }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public NurbsSurfaceKnotList(Rhino.Geometry.Collections.NurbsSurfaceKnotList f)
         {
             CopyFrom(f);

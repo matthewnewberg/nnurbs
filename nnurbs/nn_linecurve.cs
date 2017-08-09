@@ -17,7 +17,7 @@ namespace NN.Geometry
     {
     }
 
-#if RHINO3DMIO
+#if RHINO3DMIO || RHINOCOMMON
         public LineCurve(Rhino.Geometry.LineCurve f)
         {
             CopyFrom(f);
