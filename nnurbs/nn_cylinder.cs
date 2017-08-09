@@ -1,14 +1,13 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Rhino.Geometry
+namespace NN.Geometry
 {
   /// <summary>
   /// Represents the values of a plane, a radius and two heights -on top and beneath-
   /// that define a right circular cylinder.
   /// </summary>
   [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 152)]
-  [Serializable]
   public struct Cylinder : IEpsilonComparable<Cylinder>
   {
     #region members
@@ -160,7 +159,6 @@ namespace Rhino.Geometry
     }
     #endregion
 
-    #region methods
     /// <summary>
     /// Compute the circle at the given elevation parameter.
     /// </summary>
@@ -187,45 +185,7 @@ namespace Rhino.Geometry
       return line;
     }
 
-    /// <summary>
-    /// Constructs a Brep representation of this Cylinder. 
-    /// This is synonymous with calling NurbsSurface.CreateFromCylinder().
-    /// </summary>
-    /// <param name="capBottom">If true, the bottom of the cylinder will be capped.</param>
-    /// <param name="capTop">If true, the top of the cylinder will be capped.</param>
-    /// <returns>A Brep representation of the cylinder or null.</returns>
-    /// <example>
-    /// <code source='examples\vbnet\ex_addcylinder.vb' lang='vbnet'/>
-    /// <code source='examples\cs\ex_addcylinder.cs' lang='cs'/>
-    /// <code source='examples\py\ex_addcylinder.py' lang='py'/>
-    /// </example>
-    public Brep ToBrep(bool capBottom, bool capTop)
-    {
-      return Brep.CreateFromCylinder(this, capBottom, capTop);
-    }
-
-    /// <summary>
-    /// Constructs a Nurbs surface representation of this cylinder. 
-    /// This is synonymous with calling NurbsSurface.CreateFromCylinder().
-    /// </summary>
-    /// <returns>A Nurbs surface representation of the cylinder or null.</returns>
-    public NurbsSurface ToNurbsSurface()
-    {
-      return NurbsSurface.CreateFromCylinder(this);
-    }
-
-    /// <summary>
-    /// Constructs a RevSurface representation of this Cylinder. 
-    /// This is synonymous with calling RevSurface.CreateFromCylinder().
-    /// </summary>
-    /// <returns>A RevSurface representation of the cylinder or null.</returns>
-    public RevSurface ToRevSurface()
-    {
-      return RevSurface.CreateFromCylinder(this);
-    }
-    #endregion
-
-    /// <summary>
+     /// <summary>
     /// Check that all values in other are within epsilon of the values in this
     /// </summary>
     /// <param name="other"></param>
@@ -237,71 +197,5 @@ namespace Rhino.Geometry
              RhinoMath.EpsilonEquals(m_height1, other.m_height1, epsilon) &&
              RhinoMath.EpsilonEquals(m_height2, other.m_height2, epsilon);
     }
-
-//  // evaluate parameters and return point
-//  ON_3dPoint PointAt(
-//    double, // angular parameter [0,2pi]
-//    double  // linear parameter (height from base circle's plane)
-//    ) const;
-//  ON_3dPoint NormalAt(
-//    double, // angular parameter [0,2pi]
-//    double  // linear parameter (height from base circle's plane)
-//    ) const;
-
-//  // returns parameters of point on cylinder that is closest to given point
-//  bool ClosestPointTo( 
-//         ON_3dPoint, 
-//         double*, // angular parameter [0,2pi]
-//         double*  // linear parameter (height from base circle's plane)
-//         ) const;
-//  // returns point on cylinder that is closest to given point
-//  ON_3dPoint ClosestPointTo( 
-//         ON_3dPoint 
-//         ) const;
-
-//  // For intersections see ON_Intersect();
-
-//  // rotate cylinder about its origin
-//  bool Rotate(
-//        double,               // sin(angle)
-//        double,               // cos(angle)
-//        const ON_3dVector&  // axis of rotation
-//        );
-//  bool Rotate(
-//        double,               // angle in radians
-//        const ON_3dVector&  // axis of rotation
-//        );
-
-//  // rotate cylinder about a point and axis
-//  bool Rotate(
-//        double,               // sin(angle)
-//        double,               // cos(angle)
-//        const ON_3dVector&, // axis of rotation
-//        const ON_3dPoint&   // center of rotation
-//        );
-//  bool Rotate(
-//        double,              // angle in radians
-//        const ON_3dVector&, // axis of rotation
-//        const ON_3dPoint&   // center of rotation
-//        );
-
-//  bool Translate(
-//        const ON_3dVector&
-//        );
-
-//  // parameterization of NURBS surface does not match cylinder's transcendental paramaterization
-//  int GetNurbForm( ON_NurbsSurface& ) const; // returns 0=failure, 2=success
-
-//  /*
-//  Description:
-//    Creates a surface of revolution definition of the cylinder.
-//  Parameters:
-//    srf - [in] if not NULL, then this srf is used.
-//  Result:
-//    A surface of revolution or NULL if the cylinder is not 
-//    valid or is infinite.
-//  */
-//  ON_RevSurface* RevSurfaceForm( ON_RevSurface* srf = NULL ) const;
-
   }
 }

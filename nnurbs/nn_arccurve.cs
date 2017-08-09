@@ -1,8 +1,8 @@
 using System;
-using Rhino.Display;
+using NN.Display;
 using System.Runtime.Serialization;
 
-namespace Rhino.Geometry
+namespace NN.Geometry
 {
   /// <summary>
   /// Represent arcs and circles.
@@ -19,191 +19,88 @@ namespace Rhino.Geometry
   [Serializable]
   public class ArcCurve : Curve
   {
-    #region constructors
-    internal ArcCurve(IntPtr ptr, object parent, int subobject_index)
-      : base(ptr, parent, subobject_index)
-    {
-    }
-
     /// <summary>
     /// Initializes a new <see cref="ArcCurve"/> instance.
     /// <para>Radius is set to 1, position to Origin and Domain to full span (circle).</para>
     /// </summary>
     public ArcCurve()
     {
-      IntPtr ptr = UnsafeNativeMethods.ON_ArcCurve_New(IntPtr.Zero);
-      ConstructNonConstObject(ptr);
+      
     }
 
-    /// <summary>
-    /// Initializes a new <see cref="ArcCurve"/> instance,
-    /// copying values from another <see cref="ArcCurve"/>.
-    /// </summary>
-    /// <param name="other">Another ArcCurve.</param>
-    public ArcCurve(ArcCurve other)
-    {
-      IntPtr pOther = IntPtr.Zero;
-      if (null != other)
-        pOther = other.ConstPointer();
-      IntPtr ptr = UnsafeNativeMethods.ON_ArcCurve_New(pOther);
-      ConstructNonConstObject(ptr);
-    }
 
-    /// <summary>
-    /// Initializes a new <see cref="ArcCurve"/> instance,
-    /// copying values from another <see cref="Arc"/>.
-    /// </summary>
-    /// <param name="arc">Another Arc.</param>
-    public ArcCurve(Arc arc)
-    {
-      IntPtr ptr = UnsafeNativeMethods.ON_ArcCurve_New2(ref arc);
-      ConstructNonConstObject(ptr);
-    }
+#if RHINO3DMIO
+        public ArcCurve(Rhino.Geometry.ArcCurve f)
+        {
+            CopyFrom(f);
+        }
 
-    /// <summary>
-    /// Initializes a new <see cref="ArcCurve"/> instance,
-    /// copying values from another <see cref="Arc"/> and specifying the 
-    /// needed parametrization of the arc.
-    /// <para>Arc will not be cut again at these parameterizations.</para>
-    /// </summary>
-    /// <param name="arc">An original arc.</param>
-    /// <param name="t0">A new Domain.T0 value.</param>
-    /// <param name="t1">A new Domain.T1 value.</param>
-    public ArcCurve(Arc arc, double t0, double t1)
-    {
-      IntPtr ptr = UnsafeNativeMethods.ON_ArcCurve_New3(ref arc, t0, t1);
-      ConstructNonConstObject(ptr);
-    }
+        public bool CopyFrom(Rhino.Geometry.ArcCurve from)
+        {
+            
 
-    /// <summary>
-    /// Initializes a new <see cref="ArcCurve"/> instance,
-    /// copying the shape of a <see cref="Circle"/>.
-    /// <para>Parameterization will be [0;circle.Circumference]</para>
-    /// </summary>
-    /// <param name="circle">The original circle.</param>
-    public ArcCurve(Circle circle)
-    {
-      IntPtr ptr = UnsafeNativeMethods.ON_ArcCurve_New4(ref circle);
-      ConstructNonConstObject(ptr);
-    }
+            if (from == null)
+                return false;
 
-    /// <summary>
-    /// Initializes a new <see cref="ArcCurve"/> instance,
-    /// copying values from a <see cref="Circle"/> and specifying the 
-    /// needed parametrization of the arc.
-    /// <para>Circle will not be newly cut at these parameterizations.</para>
-    /// </summary>
-    /// <param name="circle">A circle.</param>
-    /// <param name="t0">A new Domain.T0 value.</param>
-    /// <param name="t1">A new Domain.T1 value.</param>
-    public ArcCurve(Circle circle, double t0, double t1)
-    {
-      IntPtr ptr = UnsafeNativeMethods.ON_ArcCurve_New5(ref circle, t0, t1);
-      ConstructNonConstObject(ptr);
-    }
+            //		this.Arc =  new NN.Geometry.Arc(from.Arc);
+            //		this.IsCompleteCircle = from.IsCompleteCircle;
+            this.Radius = from.Radius;
+            this.AngleRadians = from.AngleRadians;
+            this.AngleDegrees = from.AngleDegrees;
+            this.Domain = new NN.Geometry.Interval(from.Domain);
+            this.Dimension = from.Dimension;
+            this.SpanCount = from.SpanCount;
+            this.Degree = from.Degree;
+            this.IsClosed = from.IsClosed;
+            this.IsPeriodic = from.IsPeriodic;
 
-    /// <summary>
-    /// Protected constructor used in serialization.
-    /// </summary>
-    protected ArcCurve(SerializationInfo info, StreamingContext context)
-      : base (info, context)
-    {
-    }
+            this.ObjectType = (NN.DocObjects.ObjectType)from.ObjectType;
 
-    internal override GeometryBase DuplicateShallowHelper()
-    {
-      return new ArcCurve(IntPtr.Zero, null, -1);
-    }
+            this.Arc = new Arc(from.Arc);
 
-    #endregion
+            ComponentIndex = new ComponentIndex(from.ComponentIndex());
 
-    #region properties
-    const int idxRadius = 0;
-    const int idxAngleRadians = 1;
-    const int idxAngleDegrees = 2;
+            return true;
+        }
 
-    /// <summary>
-    /// Gets the arc that is contained within this ArcCurve.
-    /// </summary>
-    public Arc Arc
-    {
-      get
-      {
-        IntPtr ptr = ConstPointer();
-        Arc rc = new Arc();
-        UnsafeNativeMethods.ON_ArcCurve_GetArc(ptr, ref rc);
-        return rc;
-      }
-    }
 
-    /// <summary>
-    /// Gets a value indicating whether or not this curve can be represented by a complete circle.
-    /// </summary>
-    public bool IsCompleteCircle
-    {
-      get
-      {
-        //Do not use IsCircle as a property name. IsCircle is a function on the base class
-        IntPtr ptr = ConstPointer();
-        return UnsafeNativeMethods.ON_ArcCurve_IsCircle(ptr);
-      }
-    }
+        public bool CopyTo(Rhino.Geometry.ArcCurve to)
+        {
+            to.Domain = this.Domain.RhinoObject();
 
+            return true;
+        }
+
+        public Rhino.Geometry.ArcCurve RhinoObject()
+        {
+            return new Rhino.Geometry.ArcCurve(Arc.RhinoObject());
+        }
+
+        public override Rhino.Geometry.Curve RhinoCurveObject()
+        {
+            return RhinoObject();
+        }
+#endif
+
+        /// <summary>
+        /// Gets the arc that is contained within this ArcCurve.
+        /// </summary>
+        public Arc Arc { get; set; }
+    
     /// <summary>
     /// Gets the radius of this ArcCurve.
     /// </summary>
-    public double Radius
-    {
-      get
-      {
-        IntPtr ptr = ConstPointer();
-        return UnsafeNativeMethods.ON_ArcCurve_GetDouble(ptr, idxRadius);
-      }
-    }
+    public double Radius { get; set; }
+    
 
     /// <summary>
     /// Gets the angles of this arc in radians.
     /// </summary>
-    public double AngleRadians
-    {
-      get
-      {
-        IntPtr ptr = ConstPointer();
-        return UnsafeNativeMethods.ON_ArcCurve_GetDouble(ptr, idxAngleRadians);
-      }
-    }
-
+    public double AngleRadians { get; set; }
+    
     /// <summary>
     /// Gets the angles of this arc in degrees.
     /// </summary>
-    public double AngleDegrees
-    {
-      get
-      {
-        IntPtr ptr = ConstPointer();
-        return UnsafeNativeMethods.ON_ArcCurve_GetDouble(ptr, idxAngleDegrees);
-      }
-    }
-    #endregion
-
-#if RHINO_SDK
-    private IntPtr CurveDisplay()
-    {
-      if (IntPtr.Zero == m_pCurveDisplay)
-      {
-        IntPtr pThis = ConstPointer();
-        m_pCurveDisplay = UnsafeNativeMethods.CurveDisplay_FromArcCurve(pThis);
-      }
-      return m_pCurveDisplay;
-    }
-
-    internal sealed override void Draw(DisplayPipeline pipeline, System.Drawing.Color color, int thickness)
-    {
-      IntPtr pDisplayPipeline = pipeline.NonConstPointer();
-      int argb = color.ToArgb();
-      IntPtr pCurveDisplay = CurveDisplay();
-      UnsafeNativeMethods.CurveDisplay_Draw(pCurveDisplay, pDisplayPipeline, argb, thickness);
-    }
-#endif
+    public double AngleDegrees { get; set; }
   }
 }

@@ -5,9 +5,9 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading;
 
-using Rhino.Geometry;
+using NN.Geometry;
 
-namespace Rhino.Collections
+namespace NN.Collections
 {
   interface IRhinoTable<T>
   {
@@ -1672,20 +1672,6 @@ namespace Rhino.Collections
       }
     }
 
-    internal static Point3dList FromNativeArray(Runtime.InteropWrappers.SimpleArrayPoint3d pts)
-    {
-      if (null == pts)
-        return null;
-      int count = pts.Count;
-      Point3dList list = new Point3dList(count);
-      if (count > 0)
-      {
-        IntPtr pNativeArray = pts.ConstPointer();
-        UnsafeNativeMethods.ON_3dPointArray_CopyValues(pNativeArray, list.m_items);
-        list.m_size = count;
-      }
-      return list;
-    }
 
     /// <summary>
     /// Anything calling this function should not be modifying the contents of the array.
@@ -2025,130 +2011,5 @@ namespace Rhino.Collections
       : base(collection)
     {
     }
-
-    #region Addition Overloads
-    /// <summary>
-    /// Adds a line to this list.
-    /// </summary>
-    /// <param name="line">A line value that will be the model of the new internal curve.</param>
-    public void Add(Line line)
-    {
-      base.Add(new LineCurve(line));
-    }
-
-    /// <summary>
-    /// Adds a circle to this list.
-    /// </summary>
-    /// <param name="circle">A circle value that will be the model of the new internal curve.</param>
-    public void Add(Circle circle)
-    {
-      base.Add(new ArcCurve(circle));
-    }
-
-    /// <summary>
-    /// Adds an arc to this list.
-    /// </summary>
-    /// <param name="arc">An arc value that will be the model of the new internal curve.</param>
-    public void Add(Arc arc)
-    {
-      base.Add(new ArcCurve(arc));
-    }
-
-    /// <summary>
-    /// Adds a polyline to this list.
-    /// </summary>
-    /// <param name="polyline">A polyline value that will be copied in a new polyline.
-    /// <para>This argument can be null, an array, a list or any enumerable set of <see cref="Point3d"/>.</para></param>
-    public void Add(IEnumerable<Point3d> polyline)
-    {
-      if (polyline == null) base.Add(null);
-      base.Add(new PolylineCurve(polyline));
-    }
-
-    /// <summary>
-    /// Adds an ellipse to this list.
-    /// </summary>
-    /// <param name="ellipse">An ellipse that will be the model of the new internal curve.</param>
-    public void Add(Ellipse ellipse)
-    {
-      base.Add(NurbsCurve.CreateFromEllipse(ellipse));
-    }
-
-    #endregion
-
-    #region Insertion overloads
-    /// <summary>
-    /// Inserts a line at a given index of this list.
-    /// </summary>
-    /// <param name="index">A 0-based position in the list.</param>
-    /// <param name="line">The line value from which to construct the new curve.</param>
-    public void Insert(int index, Line line)
-    {
-      base.Insert(index, new LineCurve(line));
-    }
-
-    /// <summary>
-    /// Inserts a line at a given index of this list.
-    /// </summary>
-    /// <param name="index">A 0-based position in the list.</param>
-    /// <param name="circle">The circle value from which to construct the new curve.</param>
-    public void Insert(int index, Circle circle)
-    {
-      base.Insert(index, new ArcCurve(circle));
-    }
-
-    /// <summary>
-    /// Inserts an arc at a given index of this list.
-    /// </summary>
-    /// <param name="index">A 0-based position in the list.</param>
-    /// <param name="arc">The arc value from which to construct the new curve.</param>
-    public void Insert(int index, Arc arc)
-    {
-      base.Insert(index, new ArcCurve(arc));
-    }
-
-    /// <summary>
-    /// Inserts a polyline at a given index of this list.
-    /// </summary>
-    /// <param name="index">A 0-based position in the list.</param>
-    /// <param name="polyline">The polyline enumerable from which to construct a copy curve.
-    /// <para>This argument can be null, an array, a list or any enumerable set of
-    /// <see cref="Point3d"/>.</para></param>
-    public void Insert(int index, IEnumerable<Point3d> polyline)
-    {
-      if (polyline == null) base.Add(null);
-      base.Add(new PolylineCurve(polyline));
-    }
-
-    /// <summary>
-    /// Inserts an ellipse at a given index of this list.
-    /// </summary>
-    /// <param name="index">A 0-based position in the list.</param>
-    /// <param name="ellipse">The ellipse value from which to construct the new curve.</param>
-    public void Insert(int index, Ellipse ellipse)
-    {
-      base.Add(NurbsCurve.CreateFromEllipse(ellipse));
-    }
-    #endregion
-
-    #region Geometry utilities
-    /// <summary>
-    /// Transform all the curves in this list. If at least a single transform failed 
-    /// this function returns false.
-    /// </summary>
-    /// <param name="xform">Transformation to apply to all curves.</param>
-    public bool Transform(Transform xform)
-    {
-      bool rc = true;
-
-      foreach (Curve crv in this)
-      {
-        if (crv == null) { continue; }
-        if (!crv.Transform(xform)) { rc = false; }
-      }
-
-      return rc;
-    }
-    #endregion
   }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Rhino.Geometry
+namespace NN.Geometry
 {
   /// <summary>
   /// Represents the plane and radius values of a sphere.
@@ -54,62 +54,6 @@ namespace Rhino.Geometry
       get { return new Sphere(Point3d.Unset, RhinoMath.UnsetValue); }
     }
 
-#if RHINO_SDK
-    /// <summary>
-    /// Attempts to fit a sphere to a collection of points.
-    /// </summary>
-    /// <param name="points">Points to fit. The collection must contain at least two points.</param>
-    /// <returns>The Sphere that best approximates the points or Sphere.Unset on failure.</returns>
-    public static Sphere FitSphereToPoints(System.Collections.Generic.IEnumerable<Point3d> points)
-    {
-      if (points == null) { throw new ArgumentNullException("points"); }
-      Rhino.Collections.Point3dList pts = new Rhino.Collections.Point3dList(points);
-
-      if (pts.Count < 2) { return Sphere.Unset; }
-
-      Plane plane;
-      if (Plane.FitPlaneToPoints(points, out plane) == PlaneFitResult.Failure)
-      { return Sphere.Unset; }
-
-      Point3d meanP = new Point3d(0, 0, 0);
-      for (int i = 0; i < pts.Count; i++)
-      { meanP += pts[i]; }
-      meanP /= pts.Count;
-
-      Point3d center = meanP;
-      double radius = -1;
-
-      for (int k = 0; k < 2048; k++)
-      {
-        double meanL = 0.0;
-        Vector3d meanD = new Vector3d(0, 0, 0);
-        Point3d current = center;
-
-        for (int i = 0; i < pts.Count; i++)
-        {
-          Vector3d diff = pts[i] - center;
-          double length = diff.Length;
-
-          if (length > RhinoMath.SqrtEpsilon)
-          {
-            meanL += length;
-            meanD -= (diff / length);
-          }
-        }
-
-        meanL /= pts.Count;
-        meanD /= pts.Count;
-
-        center = meanP + (meanD * meanL);
-        radius = meanL;
-
-        if (center.DistanceTo(current) < RhinoMath.SqrtEpsilon) { break; }
-      }
-
-      plane.Origin = center;
-      return new Sphere(plane, radius);
-    }
-#endif
     #endregion
 
     #region properties
@@ -426,34 +370,6 @@ namespace Rhino.Geometry
       return rc;
     }
 
-    /// <summary>
-    /// Converts this sphere is it Brep representation
-    /// </summary>
-    /// <returns></returns>
-    public Brep ToBrep()
-    {
-      return Brep.CreateFromSphere(this);
-    }
-
-    /// <summary>
-    /// Converts this sphere to its NurbsSurface representation. 
-    /// This is synonymous with calling NurbsSurface.CreateFromSphere().
-    /// </summary>
-    /// <returns>A nurbs surface representation of this sphere or null.</returns>
-    public NurbsSurface ToNurbsSurface()
-    {
-      return NurbsSurface.CreateFromSphere(this);
-    }
-
-    /// <summary>
-    /// Converts this Sphere to a RevSurface representation. 
-    /// This is synonymous with calling RevSurface.CreateFromSphere().
-    /// </summary>
-    /// <returns>A surface of revolution representation of this sphere or null.</returns>
-    public RevSurface ToRevSurface()
-    {
-      return RevSurface.CreateFromSphere(this);
-    }
     #endregion
 
     /// <summary>

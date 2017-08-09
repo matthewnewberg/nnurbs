@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Rhino.Runtime.InteropWrappers;
+using NN.Runtime.InteropWrappers;
 
-namespace Rhino.Runtime.InteropWrappers
+namespace NN.Runtime.InteropWrappers
 {
   /// <summary>
   /// This is only needed when passing values to the Rhino C++ core, ignore
   /// for .NET plug-ins.
   /// </summary>
-  [CLSCompliant(false)]
+  
   [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 88)]
   public struct MeshPointDataStruct
   {
@@ -86,7 +86,7 @@ namespace Rhino.Runtime.InteropWrappers
   }
 }
 
-namespace Rhino.Geometry
+namespace NN.Geometry
 {
   /// <summary>
   /// Represents a point that is found on a mesh.
@@ -149,21 +149,6 @@ namespace Rhino.Geometry
 
     //bool IsValid( ON_TextLog* text_log ) const;
 
-#if RHINO_SDK
-    /// <summary>
-    /// Gets the mesh face indices of the triangle where the
-    /// intersection is on the face takes into consideration
-    /// the way the quad was split during the intersection.
-    /// </summary>
-    public bool GetTriangle(out int a, out int b, out int c)
-    {
-      IntPtr pConstMesh = m_parent.ConstPointer();
-      a = -1;
-      b = -1;
-      c = -1;
-      return UnsafeNativeMethods.ON_MESHPOINT_GetTriangle(pConstMesh, ref m_data, ref a, ref b, ref b);
-    }
-#endif
 
     /// <summary>
     /// Face triangle where the intersection takes place:
@@ -208,168 +193,7 @@ namespace Rhino.Geometry
   }
 }
 
-namespace Rhino.Geometry.Intersect
+namespace NN.Geometry.Intersect
 {
-  //// keep private until we have something that works/makes sense
-  //public class RayShooter //: IDisposable
-  //{
-  //  //IntPtr m_mesh_rtree = IntPtr.Zero;
-  //  //Mesh m_target_mesh;
-  //  //NOTE! This is NOT a direct wrapper around ON_RayShooter. The class name was used to define
-  //  //      a general ray shooter against geometry. Different low level unmanaged classes are used
-  //  //      by this class
-  //  public RayShooter(Mesh targetMesh)
-  //  {
-  //    //m_target_mesh = targetMesh;
-  //    //IntPtr pConstMesh = m_target_mesh.ConstPointer();
-  //    //m_mesh_rtree = UnsafeNativeMethods.ON_RTree_NewFromMesh(pConstMesh);
-  //  }
-
-  //  public double Shoot(Ray3d ray)
-  //  {
-  //    return 0;
-  //    //return UnsafeNativeMethods.ON_RTree_ShootRay(m_mesh_rtree, ref ray);
-  //  }
-
-  //}
-
-  //public class ON_CurveLeafBox { }
-  //public class ON_CurveTreeBezier : ON_BezierCurve { }
-  //public class ON_SurfaceLeafBox { }
-  //public class ON_SurfaceTreeBezier : ON_BezierSurface { }
-  //public class ON_CurveTreeNode { }
-  //public class ON_CurveTree { }
-  //public class ON_SurfaceTreeNode { }
-  //public class ON_SurfaceTree { }
-  //public class ON_RayShooter { }
-  //public class ON_MMX_POINT { }
-  //public class ON_MMX_Polyline { }
-  //public class ON_CURVE_POINT { }
-  //public class ON_CMX_EVENT { }
-  //public class ON_MeshTreeNode { }
-  //public class ON_MeshTree { }
-
-  //also add ON_RTree
-
-#if RHINO_SDK
-
-  /// <summary>
-  /// Represents a particular instance of a clash or intersection between two meshes.
-  /// </summary>
-  public class MeshClash
-  {
-    Mesh m_mesh_a;
-    Mesh m_mesh_b;
-    Point3d m_P = Point3d.Unset;
-    double m_radius;
-
-    private MeshClash() { }
-
-    /// <summary>
-    /// Gets the first mesh.
-    /// </summary>
-    public Mesh MeshA { get { return m_mesh_a; } }
-
-    /// <summary>
-    /// Gets the second mesh.
-    /// </summary>
-    public Mesh MeshB { get { return m_mesh_b; } }
-
-    /// <summary>
-    /// If valid, then the sphere centered at ClashPoint of ClashRadius
-    /// distance interesects the clashing meshes.
-    /// </summary>
-    public Point3d ClashPoint { get { return m_P; } }
-
-    /// <summary>
-    /// Gets the clash, or intersection, radius.
-    /// </summary>
-    public double ClashRadius { get { return m_radius; } }
-
-    /// <summary>
-    /// Searches for locations where the distance from <i>a mesh in one set</i> of meshes
-    /// is less than distance to <i>another mesh in a second set</i> of meshes.
-    /// </summary>
-    /// <param name="setA">The first set of meshes.</param>
-    /// <param name="setB">The second set of meshes.</param>
-    /// <param name="distance">The largest distance at which there is a clash.
-    /// All values smaller than this cause a clash as well.</param>
-    /// <param name="maxEventCount">The maximum number of clash objects.</param>
-    /// <returns>An array of clash objects.</returns>
-    public static MeshClash[] Search(IEnumerable<Mesh> setA, IEnumerable<Mesh> setB, double distance, int maxEventCount)
-    {
-      IList<Mesh> _setA = setA as IList<Mesh> ?? new List<Mesh>(setA);
-
-      IList<Mesh> _setB = setB as IList<Mesh> ?? new List<Mesh>(setB);
-
-
-      Rhino.Runtime.InteropWrappers.SimpleArrayMeshPointer meshes_a = new Runtime.InteropWrappers.SimpleArrayMeshPointer();
-      foreach (Mesh m in setA)
-        meshes_a.Add(m, true);
-      Rhino.Runtime.InteropWrappers.SimpleArrayMeshPointer meshes_b = new Runtime.InteropWrappers.SimpleArrayMeshPointer();
-      foreach (Mesh m in setB)
-        meshes_b.Add(m, true);
-
-      IntPtr pClashEventList = UnsafeNativeMethods.ON_SimpleArray_ClashEvent_New();
-      IntPtr pMeshesA = meshes_a.ConstPointer();
-      IntPtr pMeshesB = meshes_b.ConstPointer();
-      int count = UnsafeNativeMethods.ONC_MeshClashSearch(pMeshesA, pMeshesB, distance, maxEventCount, true, pClashEventList);
-
-      MeshClash[] rc = new MeshClash[count];
-      Point3d pt = new Point3d();
-      int indexA = 0;
-      int indexB = 0;
-      double radius = distance / 2.0;
-      for (int i = 0; i < count; i++)
-      {
-        MeshClash mc = new MeshClash();
-        UnsafeNativeMethods.ON_SimpleArray_ClashEvent_GetEvent(pClashEventList, i, ref indexA, ref indexB, ref pt);
-        if (indexA >= 0 && indexB >= 0)
-        {
-          mc.m_mesh_a = _setA[indexA];
-          mc.m_mesh_b = _setB[indexB];
-          mc.m_P = pt;
-          mc.m_radius = radius;
-        }
-        rc[i] = mc;
-      }
-
-      meshes_a.Dispose();
-      meshes_b.Dispose();
-
-      UnsafeNativeMethods.ON_SimpleArray_ClashEvent_Delete(pClashEventList);
-      return rc;
-    }
-
-    /// <summary>
-    /// Searches the locations where the distance from <i>the first mesh</i> to <i>a mesh in the second set</i> of meshes
-    /// is less than the provided value.
-    /// </summary>
-    /// <param name="meshA">The first mesh.</param>
-    /// <param name="setB">The second set of meshes.</param>
-    /// <param name="distance">The largest distance at which there is a clash.
-    /// All values smaller than this cause a clash as well.</param>
-    /// <param name="maxEventCount">The maximum number of clash objects.</param>
-    /// <returns>An array of clash objects.</returns>
-    public static MeshClash[] Search(Mesh meshA, IEnumerable<Mesh> setB, double distance, int maxEventCount)
-    {
-      return Search(new Mesh[] { meshA }, setB, distance, maxEventCount);
-    }
-
-    /// <summary>
-    /// Searches the locations where the distance from <i>the first mesh</i> to <i>the second mesh</i>
-    /// is less than the provided value.
-    /// </summary>
-    /// <param name="meshA">The first mesh.</param>
-    /// <param name="meshB">The second mesh.</param>
-    /// <param name="distance">The largest distance at which there is a clash.
-    /// All values smaller than this cause a clash as well.</param>
-    /// <param name="maxEventCount">The maximum number of clash objects.</param>
-    /// <returns>An array of clash objects.</returns>
-    public static MeshClash[] Search(Mesh meshA, Mesh meshB, double distance, int maxEventCount)
-    {
-      return Search(new Mesh[] { meshA }, new Mesh[] { meshB }, distance, maxEventCount);
-    }
-  }
-#endif
+  
 }

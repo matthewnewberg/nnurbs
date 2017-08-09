@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Rhino.Geometry
+namespace NN.Geometry
 {
   /// <summary>
   /// Represents the center plane, radius and height values in a right circular cone.
@@ -135,39 +135,7 @@ namespace Rhino.Geometry
       return 180.0 * AngleInRadians() / Math.PI;
     }
 
-    /// <summary>
-    /// Constructs a Nurbs surface representation of this Cone. 
-    /// This is synonymous with calling NurbsSurface.CreateFromCone().
-    /// </summary>
-    /// <returns>A Nurbs surface representation of the cone or null.</returns>
-    public NurbsSurface ToNurbsSurface()
-    {
-      return NurbsSurface.CreateFromCone(this);
-    }
-
-    /// <summary>
-    /// Constructs a RevSurface representation of this Cone. 
-    /// This is synonymous with calling RevSurface.CreateFromCone().
-    /// </summary>
-    /// <returns>A RevSurface representation of the cone or null.</returns>
-    public RevSurface ToRevSurface()
-    {
-      return RevSurface.CreateFromCone(this);
-    }
-
-    /// <summary>
-    /// Gets a Brep representation of the cone with a single
-    /// face for the cone, an edge along the cone seam, 
-    /// and vertices at the base and apex ends of this seam edge.
-    /// The optional cap is a single face with one circular edge 
-    /// starting and ending at the base vertex.
-    /// </summary>
-    /// <param name="capBottom">true if the bottom should be filled with a surface. false otherwise.</param>
-    /// <returns>A brep (polysurface) representation of this cone values.</returns>
-    public Brep ToBrep(bool capBottom)
-    {
-      return Brep.CreateFromCone(this, capBottom);
-    }
+    
     #endregion
 
     /// <summary>

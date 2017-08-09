@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Rhino.Geometry
+namespace NN.Geometry
 {
   /// <summary>
   /// Represents a rectangular grid of 3D points.
@@ -14,8 +14,6 @@ namespace Rhino.Geometry
     /// </summary>
     public Point3dGrid()
     {
-      IntPtr ptr = UnsafeNativeMethods.ON_PointGrid_New(0,0);
-      ConstructNonConstObject(ptr);
     }
 
     /// <summary>
@@ -25,24 +23,6 @@ namespace Rhino.Geometry
     /// <param name="columns">An amount of columns.</param>
     public Point3dGrid(int rows, int columns)
     {
-      IntPtr ptr = UnsafeNativeMethods.ON_PointGrid_New(rows, columns);
-      ConstructNonConstObject(ptr);
     }
-
-
-    internal Point3dGrid(IntPtr ptr, object parent) 
-      : base(ptr, parent, -1)
-    { }
-
-    /// <summary>
-    /// Protected constructor for internal use.
-    /// </summary>
-    /// <param name="info">Serialization data.</param>
-    /// <param name="context">Serialization stream.</param>
-    protected Point3dGrid(SerializationInfo info, StreamingContext context)
-      : base (info, context)
-    {
-    }
-
   }
 }

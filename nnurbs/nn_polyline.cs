@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 
-namespace Rhino.Geometry
+namespace NN.Geometry
 {
   /// <summary>
   /// Represents an ordered set of points connected by linear segments.
   /// <para>Polylines are closed if start and end points coincide.</para>
   /// </summary>
   [Serializable]
-  public class Polyline : Rhino.Collections.Point3dList
+  public class Polyline : NN.Collections.Point3dList
   {
     #region constructors
     /// <summary>
@@ -43,8 +43,7 @@ namespace Rhino.Geometry
       Polyline list = new Polyline(count);
       if (count > 0)
       {
-        IntPtr pNativeArray = pts.ConstPointer();
-        UnsafeNativeMethods.ON_3dPointArray_CopyValues(pNativeArray, list.m_items);
+        list.AddRange(pts);
         list.m_size = count;
       }
       return list;
@@ -114,9 +113,9 @@ namespace Rhino.Geometry
 
       if (tolerance <= 0.0)
       {
-        int rc = UnsafeNativeMethods.ONC_ComparePoint(3, false, First, Last);
-        return (rc == 0);
+        return First.DistanceTo(Last) < float.Epsilon;
       }
+
       return (First.DistanceTo(Last) <= tolerance);
     }
 
@@ -131,7 +130,7 @@ namespace Rhino.Geometry
 
         double L = 0.0;
 
-        for (int i = 0; i < (m_size - 1); i++)
+        for (int i = 0; i < (m_size - 1); ++i)
         {
           L += this[i].DistanceTo(this[i + 1]);
         }
@@ -335,19 +334,7 @@ namespace Rhino.Geometry
 
       return segments;
     }
-
-    /// <summary>
-    /// Constructs a nurbs curve representation of this polyline.
-    /// </summary>
-    /// <returns>A Nurbs curve shaped like this polyline or null on failure.</returns>
-    public NurbsCurve ToNurbsCurve()
-    {
-      if (m_size < 2) { return null; }
-      PolylineCurve pl_crv = new PolylineCurve(this);
-
-      return pl_crv.ToNurbsCurve();
-    }
-
+        
     /// <summary>
     /// Removes all points that are closer than tolerance to the previous point. 
     /// <para>Start and end points are left intact.</para>
@@ -714,32 +701,6 @@ namespace Rhino.Geometry
       center /= weight;
       return center;
     }
-
-#if RHINO_SDK
-    /// <summary>
-    /// Attempts to create a list of triangles which represent a
-    /// triangulation of a closed polyline
-    /// </summary>
-    /// <returns></returns>
-    public MeshFace[] TriangulateClosedPolyline()
-    {
-      if (!IsClosed)
-        return null;
-      int triangle_count = (Count - 3) * 3;
-      if (triangle_count < 1)
-        return null;
-      int[] triangles = new int[triangle_count];
-      if (!UnsafeNativeMethods.TLC_Triangulate3dPolygon(Count, ToArray(), triangle_count, triangles))
-        return null;
-      int face_count = triangle_count / 3;
-      MeshFace[] rc = new MeshFace[face_count];
-      for (int i = 0; i < face_count; i++)
-      {
-        rc[i] = new MeshFace(triangles[i * 3], triangles[i * 3 + 1], triangles[i * 3 + 2]);
-      }
-      return rc;
-    }
-#endif
 
     #endregion
   }

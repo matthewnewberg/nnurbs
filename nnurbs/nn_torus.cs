@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Rhino.Geometry
+namespace NN.Geometry
 {
   /// <summary>
   /// Represents the value of a plane and two radii in a torus that is oriented in three-dimensional space.
@@ -91,32 +91,6 @@ namespace Rhino.Geometry
     }
     #endregion
 
-    #region methods
-    /// <summary>
-    /// Converts this torus to its nurbs surface representation. 
-    /// This is synonymous with calling NurbsSurface.CreateFromTorus().
-    /// </summary>
-    /// <returns>A nurbs surface representation of this torus, or null on error.</returns>
-    public NurbsSurface ToNurbsSurface()
-    {
-      return NurbsSurface.CreateFromTorus(this);
-    }
-
-    /// <summary>
-    /// Convert this torus to a surface of revolution representation. 
-    /// This is synonymous with calling RevSurface.CreateFromTorus().
-    /// </summary>
-    /// <returns>A surface of revolution representation of this torus, or null on error.</returns>
-    /// <example>
-    /// <code source='examples\vbnet\ex_addtorus.vb' lang='vbnet'/>
-    /// <code source='examples\cs\ex_addtorus.cs' lang='cs'/>
-    /// <code source='examples\py\ex_addtorus.py' lang='py'/>
-    /// </example>
-    public RevSurface ToRevSurface()
-    {
-      return RevSurface.CreateFromTorus(this);
-    }
-    #endregion
 
     /// <summary>
     /// Check that all values in other are within epsilon of the values in this

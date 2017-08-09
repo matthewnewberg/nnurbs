@@ -1,134 +1,99 @@
 using System;
-using Rhino.Display;
+using NN.Display;
 using System.Runtime.Serialization;
 
-namespace Rhino.Geometry
+namespace NN.Geometry
 {
-  /// <summary>
-  /// Represents the geometry of a set of linked line segments.
-  /// <para>This is fundamentally a class that derives from <see cref="Curve"/>
-  /// and internally contains a <see cref="Polyline"/>.</para>
-  /// </summary>
-  [Serializable]
-  public class PolylineCurve : Curve
-  {
-    #region constructors
-
     /// <summary>
-    /// Initializes a new empty polyline curve.
+    /// Represents the geometry of a set of linked line segments.
+    /// <para>This is fundamentally a class that derives from <see cref="Curve"/>
+    /// and internally contains a <see cref="Polyline"/>.</para>
     /// </summary>
-    public PolylineCurve()
+    [Serializable]
+    public class PolylineCurve : Curve
     {
-      IntPtr ptr = UnsafeNativeMethods.ON_PolylineCurve_New(IntPtr.Zero);
-      ConstructNonConstObject(ptr);
-    }
+        /// <summary>
+        /// Initializes a new empty polyline curve.
+        /// </summary>
+        public PolylineCurve()
+        {
+        }
 
-    /// <summary>
-    /// Initializes a new polyline curve by copying its content from another polyline curve.
-    /// </summary>
-    /// <param name="other">Another polyline curve.</param>
-    public PolylineCurve(PolylineCurve other)
-    {
-      IntPtr pOther= IntPtr.Zero;
-      if (null != other)
-        pOther = other.ConstPointer();
-      IntPtr ptr = UnsafeNativeMethods.ON_PolylineCurve_New(pOther);
-      ConstructNonConstObject(ptr);
-    }
+#if RHINO3DMIO
+        public PolylineCurve(Rhino.Geometry.PolylineCurve f)
+        {
+            CopyFrom(f);
+        }
 
-    /// <summary>
-    /// Initializes a new polyline curve by copying its content from another set of points.
-    /// </summary>
-    /// <param name="points">A list, an array or any enumerable set of points to copy from.
-    /// This includes a <see cref="Polyline"/> object.</param>
-    public PolylineCurve(System.Collections.Generic.IEnumerable<Point3d> points)
-    {
-      int count;
-      Point3d[] ptArray = Rhino.Collections.Point3dList.GetConstPointArray(points, out count);
-      IntPtr ptr;
-      if (null == ptArray || count < 1)
-      {
-        ptr = UnsafeNativeMethods.ON_PolylineCurve_New(IntPtr.Zero);
-      }
-      else
-      {
-        ptr = UnsafeNativeMethods.ON_PolylineCurve_New2(count, ptArray);
-      }
-      ConstructNonConstObject(ptr);
-    }
+        public bool CopyFrom(Rhino.Geometry.PolylineCurve from)
+        {
+            ComponentIndex = new ComponentIndex(from.ComponentIndex());
 
-    internal PolylineCurve(IntPtr ptr, object parent, int subobject_index)
-      : base(ptr, parent, subobject_index)
-    {
-    }
+            if (from == null)
+                return false;
 
-    /// <summary>
-    /// Protected constructor for internal use.
-    /// </summary>
-    /// <param name="info">Serialization data.</param>
-    /// <param name="context">Serialization stream.</param>
-    protected PolylineCurve(SerializationInfo info, StreamingContext context)
-      : base (info, context)
-    {
-    }
-    #endregion
+            this.PointCount = from.PointCount;
+            this.Domain = new NN.Geometry.Interval(from.Domain);
+            this.Dimension = from.Dimension;
+            this.SpanCount = from.SpanCount;
+            this.Degree = from.Degree;
+            this.IsClosed = from.IsClosed;
+            this.IsPeriodic = from.IsPeriodic;
 
-    internal static PolylineCurve FromArray(Point3d[] points)
-    {
-      int count = points.Length;
-      IntPtr ptr = UnsafeNativeMethods.ON_PolylineCurve_New2(count, points);
-      return new PolylineCurve(ptr, null, -1);
-    }
+            this.ObjectType = (NN.DocObjects.ObjectType)from.ObjectType;
 
-    internal override GeometryBase DuplicateShallowHelper()
-    {
-      return new PolylineCurve(IntPtr.Zero, null, -1);
-    }
 
-#if RHINO_SDK
-    internal override void Draw(DisplayPipeline pipeline, System.Drawing.Color color, int thickness)
-    {
-      IntPtr ptr = ConstPointer();
-      IntPtr pDisplayPipeline = pipeline.NonConstPointer();
-      int argb = color.ToArgb();
-      UnsafeNativeMethods.ON_PolylineCurve_Draw(ptr, pDisplayPipeline, argb, thickness);
-    }
+            this.Points = new System.Collections.Generic.List<Point3d>();
+
+            for (int i = 0; i < this.PointCount; ++i) {
+                
+                Rhino.Geometry.Point3d p = from.Point(i);
+                this.Points.Add(new Point3d(p.X, p.Y, p.Z));
+            }
+
+            return true;
+        }
+
+
+        public bool CopyTo(Rhino.Geometry.PolylineCurve to)
+        {
+            to.Domain = this.Domain.RhinoObject();
+
+            return true;
+        }
+
+        public Rhino.Geometry.PolylineCurve RhinoObject()
+        {
+            var rhinoPoints = new System.Collections.Generic.List<Rhino.Geometry.Point3d>();
+
+            foreach(var p in this.Points)
+                rhinoPoints.Add(p.RhinoObject());
+
+            var rhinoCurve = new Rhino.Geometry.PolylineCurve(rhinoPoints);
+
+            rhinoCurve.Domain = this.Domain.RhinoObject();
+
+            return rhinoCurve;
+
+        }
+
+        public override Rhino.Geometry.Curve RhinoCurveObject()
+        {
+            return RhinoObject();
+        }
 #endif
 
-    /// <summary>
-    /// Gets the number of points in this polyline.
-    /// </summary>
-    public int PointCount
-    {
-      get
-      {
-        IntPtr ptr = ConstPointer();
-        return UnsafeNativeMethods.ON_PolylineCurve_PointCount(ptr);
-      }
-    }
+        /// Gets the number of points in this polyline.
+        /// </summary>
+        public int PointCount { get; set; }
 
-    /// <summary>
-    /// Gets a point at a specified index in the polyline curve.
-    /// </summary>
-    /// <param name="index">An index.</param>
-    /// <returns>A point.</returns>
-    public Point3d Point(int index)
-    {
-      IntPtr ptr = ConstPointer();
-      Point3d pt = new Point3d();
-      UnsafeNativeMethods.ON_PolylineCurve_GetSetPoint(ptr, index, ref pt, false);
-      return pt;
-    }
 
-    /// <summary>
-    /// Sets a point at a specified index in the polyline curve.
-    /// </summary>
-    /// <param name="index">An index.</param>
-    /// <param name="point">A point location to set.</param>
-    public void SetPoint(int index, Point3d point)
-    {
-      IntPtr ptr = NonConstPointer();
-      UnsafeNativeMethods.ON_PolylineCurve_GetSetPoint(ptr, index, ref point, true);
+        /// <summary>
+        /// Gets a point at a specified index in the polyline curve.
+        /// </summary>
+        /// <param name="index">An index.</param>
+        /// <returns>A point.</returns>
+        /// 
+        public System.Collections.Generic.List<Point3d> Points = new System.Collections.Generic.List<Point3d>();
     }
-  }
 }

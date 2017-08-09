@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Rhino.Geometry
+namespace NN.Geometry
 {
   /// <summary>
   /// Represents the values of a plane and two intervals
@@ -46,7 +46,7 @@ namespace Rhino.Geometry
       deviation = 0.0;
       angleDeviation = 0.0;
 
-      Rhino.Collections.Point3dList pts = new Rhino.Collections.Point3dList(5);
+      NN.Collections.Point3dList pts = new NN.Collections.Point3dList(5);
       foreach (Point3d pt in polyline)
       {
         pts.Add(pt);
@@ -82,7 +82,7 @@ namespace Rhino.Geometry
       ComputeDeviation(rc, pts, out deviation, out angleDeviation);
       return rc;
     }
-    private static void ComputeDeviation(Rectangle3d rec, Rhino.Collections.Point3dList pts, out double dev, out double angdev)
+    private static void ComputeDeviation(Rectangle3d rec, NN.Collections.Point3dList pts, out double dev, out double angdev)
     {
       dev = double.MaxValue;
       for (int i = 0; i < 4; i++)
@@ -492,14 +492,8 @@ namespace Rhino.Geometry
       rc.Add(Corner(0));
       return rc;
     }
-    /// <summary>
-    /// Constructs a nurbs curve representation of this rectangle.
-    /// </summary>
-    /// <returns>A nurbs curve with the same shape as this rectangle.</returns>
-    public NurbsCurve ToNurbsCurve()
-    {
-      return ToPolyline().ToNurbsCurve();
-    }
+
+
     #endregion
 
     /// <summary>

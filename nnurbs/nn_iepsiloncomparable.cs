@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rhino
+namespace NN
 {
   public interface IEpsilonComparable<in T>
   {

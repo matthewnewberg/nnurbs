@@ -1,13 +1,12 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Rhino.Geometry
+namespace NN.Geometry
 {
   /// <summary>
   /// Represents the values of a plane and the two semiaxes radii in an ellipse.
   /// </summary>
   [StructLayout(LayoutKind.Sequential, Pack = 8, Size = 144)]
-  [Serializable]
   public struct Ellipse : IEpsilonComparable<Ellipse>
   {
     #region members
@@ -76,17 +75,6 @@ namespace Rhino.Geometry
     }
     #endregion
 
-    #region methods
-    /// <summary>
-    /// Constructs a nurbs curve representation of this ellipse. 
-    /// <para>This is equivalent to calling NurbsCurve.CreateFromEllipse().</para>
-    /// </summary>
-    /// <returns>A nurbs curve representation of this ellipse or null if no such representation could be made.</returns>
-    public NurbsCurve ToNurbsCurve()
-    {
-      return NurbsCurve.CreateFromEllipse(this);
-    }
-    #endregion
 
     /// <summary>
     /// Check that all values in other are within epsilon of the values in this

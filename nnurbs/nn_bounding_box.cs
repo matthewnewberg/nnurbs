@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Rhino.Geometry
+namespace NN.Geometry
 {
   /// <summary>
   /// Represents the value of two points in a bounding box 
@@ -16,19 +16,43 @@ namespace Rhino.Geometry
     internal Point3d m_min;
     internal Point3d m_max;
     #endregion
+        
+#if RHINO3DMIO
+        public BoundingBox(Rhino.Geometry.BoundingBox f)
+        {
+            this.m_min = new Point3d(f.Min);
+            this.m_max = new Point3d(f.Max);
 
-    #region constructors
-    /// <summary>
-    /// Constructs a new boundingbox from two corner points.
-    /// </summary>
-    /// <param name="min">Point containing all the minimum coordinates.</param>
-    /// <param name="max">Point containing all the maximum coordinates.</param>
-    /// <example>
-    /// <code source='examples\vbnet\ex_addbrepbox.vb' lang='vbnet'/>
-    /// <code source='examples\cs\ex_addbrepbox.cs' lang='cs'/>
-    /// <code source='examples\py\ex_addbrepbox.py' lang='py'/>
-    /// </example>
-    public BoundingBox(Point3d min, Point3d max)
+            CopyFrom(f);
+        }
+
+        public bool CopyFrom(Rhino.Geometry.BoundingBox from)
+        {
+            this.m_min = new Point3d(from.Min);
+            this.m_max = new Point3d(from.Max);
+
+            return true;
+        }
+
+
+        public bool CopyTo(Rhino.Geometry.BoundingBox t)
+        {
+            return true;
+        }
+#endif
+
+        #region constructors
+        /// <summary>
+        /// Constructs a new boundingbox from two corner points.
+        /// </summary>
+        /// <param name="min">Point containing all the minimum coordinates.</param>
+        /// <param name="max">Point containing all the maximum coordinates.</param>
+        /// <example>
+        /// <code source='examples\vbnet\ex_addbrepbox.vb' lang='vbnet'/>
+        /// <code source='examples\cs\ex_addbrepbox.cs' lang='cs'/>
+        /// <code source='examples\py\ex_addbrepbox.py' lang='py'/>
+        /// </example>
+        public BoundingBox(Point3d min, Point3d max)
     {
       m_min = min;
       m_max = max;
@@ -612,22 +636,6 @@ namespace Rhino.Geometry
       return true;
     }
 
-    /// <summary>
-    /// Constructs a <see cref="Brep"/> representation of this boundingbox.
-    /// </summary>
-    /// <returns>If this operation is sucessfull, a Brep representation of this box; otherwise null.</returns>
-    /// <example>
-    /// <code source='examples\vbnet\ex_addbrepbox.vb' lang='vbnet'/>
-    /// <code source='examples\cs\ex_addbrepbox.cs' lang='cs'/>
-    /// <code source='examples\py\ex_addbrepbox.py' lang='py'/>
-    /// </example>
-    public Brep ToBrep()
-    {
-      return Brep.CreateFromBox(this);
-    }
-
-    // TODO: ToMesh()
-    // TODO: ToMesh(int xDensity, int yDensity, int zDensity)
 
     #region union methods
     /// <summary>
