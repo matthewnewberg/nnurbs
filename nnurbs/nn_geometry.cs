@@ -46,6 +46,11 @@ namespace NN.Geometry
             if (mesh != null)
                 return new NN.Geometry.Mesh(mesh);
 
+            var point = f as Rhino.Geometry.Point;
+
+            if (point != null)
+                return new NN.Geometry.Point(point);
+
             Console.WriteLine("Missing!!!!");
             Console.WriteLine(f.GetType().ToString());
             Console.WriteLine(f.ToString());

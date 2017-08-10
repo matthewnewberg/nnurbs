@@ -712,7 +712,7 @@ namespace NN.Geometry.Collections
     /// <summary>
     /// Provides access to the vertex colors of a mesh object.
     /// </summary>
-    public class MeshVertexColorList : System.Collections.Generic.List<Color>, NN.Collections.IRhinoTable<Color>
+    public class MeshVertexColorList : System.Collections.Generic.List<ColorEx>, NN.Collections.IRhinoTable<ColorEx>
     {
 #if RHINO3DMIO || RHINOCOMMON
         public MeshVertexColorList(Rhino.Geometry.Collections.MeshVertexColorList rhinoColors)
@@ -721,7 +721,8 @@ namespace NN.Geometry.Collections
 
             this.Capacity = rhinoColors.Count;
 
-            this.AddRange(rhinoColors);
+            foreach (var c in rhinoColors)
+                this.Add(new ColorEx(c));
         }
 #endif
 

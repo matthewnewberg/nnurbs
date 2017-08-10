@@ -273,17 +273,17 @@ namespace NN.DocObjects
         public double Reflectivity { get; set; }
 
 
-        public System.Drawing.Color DiffuseColor { get; set; }
+        public ColorEx DiffuseColor { get; set; }
 
-        public System.Drawing.Color AmbientColor { get; set; }
+        public ColorEx AmbientColor { get; set; }
 
-        public System.Drawing.Color EmissionColor { get; set; }
+        public ColorEx EmissionColor { get; set; }
 
-        public System.Drawing.Color SpecularColor { get; set; }
+        public ColorEx SpecularColor { get; set; }
 
-        public System.Drawing.Color ReflectionColor { get; set; }
+        public ColorEx ReflectionColor { get; set; }
 
-        public System.Drawing.Color TransparentColor { get; set; }
+        public ColorEx TransparentColor { get; set; }
 
 
         [System.Xml.Serialization.XmlElement("Textures")]

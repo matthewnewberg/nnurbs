@@ -20,7 +20,7 @@ namespace NN.Geometry
         private double m_t1;
         #endregion
 
-#if RHINO3DMIO || RHINOCOMMON|| RHINOCOMMON
+#if RHINO3DMIO || RHINOCOMMON
         public Interval(Rhino.Geometry.Interval f)
         {
             m_t0 = f.T0;
@@ -1203,10 +1203,8 @@ namespace NN.Geometry
         internal double m_y;
         internal double m_z;
         #endregion
-
-
-
-#if RHINO3DMIO || RHINOCOMMON|| RHINOCOMMON
+        
+#if RHINO3DMIO || RHINOCOMMON
         public Point3d(Rhino.Geometry.Point3d f)
         {
             m_x = f.X;
@@ -2046,9 +2044,8 @@ namespace NN.Geometry
         internal double m_y;
         internal double m_z;
         internal double m_w;
-
-
-#if RHINO3DMIO || RHINOCOMMON|| RHINOCOMMON
+        
+#if RHINO3DMIO || RHINOCOMMON
         public Point4d(Rhino.Geometry.Point4d f)
         {
             m_x = f.X;
@@ -2677,7 +2674,7 @@ namespace NN.Geometry
         #region constructors
 
 
-#if RHINO3DMIO || RHINOCOMMON|| RHINOCOMMON
+#if RHINO3DMIO || RHINOCOMMON
         public Vector3d(Rhino.Geometry.Vector3d f)
         {
             m_x = f.X;

@@ -14,6 +14,36 @@ namespace NN.Geometry
     [XmlType(TypeName = "PointGeometry")]
     public class Point : GeometryBase
     {
+#if RHINO3DMIO || RHINOCOMMON
+        public Point(Rhino.Geometry.Point f)
+        {
+            CopyFrom(f);
+        }
+
+        public bool CopyFrom(Rhino.Geometry.Point from)
+        {
+            this.Location = new Point3d(from.Location);
+
+            return true;
+        }
+
+
+        public bool CopyTo(Rhino.Geometry.Point to)
+        {
+            to.Location = Location.RhinoObject();
+
+            return true;
+        }
+
+        public Rhino.Geometry.Point RhinoObject()
+        {
+            var rhinoPoint = new Rhino.Geometry.Point(Location.RhinoObject());
+
+            return rhinoPoint;
+        }
+
+#endif
+
         public Point()
         { }
 

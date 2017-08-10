@@ -290,9 +290,9 @@ namespace NN.DocObjects
         /// <code source='examples\cs\ex_modifyobjectcolor.cs' lang='cs'/>
         /// <code source='examples\py\ex_modifyobjectcolor.py' lang='py'/>
         /// </example>
-        public System.Drawing.Color ObjectColor { get; set; }
+        public ColorEx ObjectColor { get; set; }
 
-        public System.Drawing.Color PlotColor { get; set; }
+        public ColorEx PlotColor { get; set; }
 
         /// <summary>
         /// A mapping from any plugin source is associated with these attributes

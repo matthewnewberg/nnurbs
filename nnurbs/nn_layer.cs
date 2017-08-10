@@ -92,14 +92,14 @@ namespace NN.DocObjects
         /// </summary>
         /// <remarks>If you are modifying a layer inside a Rhino document, 
         /// you must call CommitChanges for the modifications to take effect.</remarks>
-        public System.Drawing.Color Color;
+        public ColorEx Color;
 
         /// <summary>
         /// Gets or sets the plot color for this layer.
         /// </summary>
         /// <remarks>If you are modifying a layer inside a Rhino document, 
         /// you must call CommitChanges for the modifications to take effect.</remarks>
-        public System.Drawing.Color PlotColor;
+        public ColorEx PlotColor;
 
         /// <summary>
         /// Gets or sets the thickness of the plotting pen in millimeters. 

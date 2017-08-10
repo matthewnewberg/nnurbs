@@ -278,10 +278,10 @@ namespace NN.Geometry
         
         /// <summary>
         /// Color to use for drawing a text mask when it is enabled. If the mask is
-        /// enabled and MaskColor is System.Drawing.Color.Transparent, then the
+        /// enabled and MaskColor is ColorEx.Transparent, then the
         /// viewport's color will be used for the MaskColor
         /// </summary>
-        public System.Drawing.Color MaskColor { get; set; }
+        public ColorEx MaskColor { get; set; }
         
 
         /// <summary>

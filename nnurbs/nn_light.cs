@@ -106,7 +106,7 @@ namespace NN.Geometry
         /// <summary>
         /// Gets or sets the ambient color.
         /// </summary>
-        public System.Drawing.Color Ambient { get; set; }
+        public ColorEx Ambient { get; set; }
 
 
         /// <summary>
@@ -117,12 +117,12 @@ namespace NN.Geometry
         /// <code source='examples\cs\ex_modifylightcolor.cs' lang='cs'/>
         /// <code source='examples\py\ex_modifylightcolor.py' lang='py'/>
         /// </example>
-        public System.Drawing.Color Diffuse { get; set; }
+        public ColorEx Diffuse { get; set; }
 
         /// <summary>
         /// Gets or sets the specular color.
         /// </summary>
-        public System.Drawing.Color Specular { get; set; }
+        public ColorEx Specular { get; set; }
 
 
         /// <summary>

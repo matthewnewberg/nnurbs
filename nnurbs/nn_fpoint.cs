@@ -266,7 +266,7 @@ namespace NN.Geometry
     {
         internal System.Numerics.Vector3 p;
 
-#if RHINO3DMIO || RHINOCOMMON|| RHINOCOMMON
+#if RHINO3DMIO || RHINOCOMMON
         public Point3f(Rhino.Geometry.Point3f rhinoVert)
         {
             p.X = rhinoVert.X;
@@ -778,10 +778,8 @@ namespace NN.Geometry
         internal System.Numerics.Vector3 v;
 
         #region constructors
-
-
-
-#if RHINO3DMIO || RHINOCOMMON|| RHINOCOMMON
+        
+#if RHINO3DMIO || RHINOCOMMON
         public Vector3f(Rhino.Geometry.Vector3f rhinoNormal)
         {
             v.X = rhinoNormal.X;

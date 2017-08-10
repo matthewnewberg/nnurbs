@@ -8,8 +8,8 @@ namespace NN.DocObjects.Custom
     /// </summary>
     public abstract class UserData
     {
-        static int g_next_serial_number = 1;
-        int m_serial_number = -1;
+        //static int g_next_serial_number = 1;
+        //int m_serial_number = -1;
 
 
         /// <summary>Descriptive name of the user data.</summary>

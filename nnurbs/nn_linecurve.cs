@@ -30,7 +30,7 @@ namespace NN.Geometry
 
             ComponentIndex = new ComponentIndex(from.ComponentIndex());
 
-            //		this.Line =  new NN.Geometry.Line(from.Line);
+            this.Line =  new NN.Geometry.Line(from.Line);
             this.Domain = new NN.Geometry.Interval(from.Domain);
             this.Dimension = from.Dimension;
             this.SpanCount = from.SpanCount;

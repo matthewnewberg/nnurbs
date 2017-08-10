@@ -10,11 +10,48 @@ namespace NN.Geometry
   [Serializable]
   public class Polyline : NN.Collections.Point3dList
   {
-    #region constructors
-    /// <summary>
-    /// Initializes a new empty polyline.
-    /// </summary>
-    public Polyline()
+        #region constructors
+
+#if RHINO3DMIO || RHINOCOMMON
+        public Polyline(Rhino.Geometry.Polyline f)
+        {
+            CopyFrom(f);
+        }
+
+        public bool CopyFrom(Rhino.Geometry.Polyline from)
+        {
+            foreach (var p in from)
+                this.Add(new Point3d(p));
+
+            return true;
+        }
+
+        public bool CopyTo(Rhino.Geometry.Polyline to)
+        {
+            to.Clear();
+
+            foreach (var p in this)
+                to.Add(p.RhinoObject());
+
+            return true;
+        }
+
+        public Rhino.Geometry.Polyline RhinoObject()
+        {
+
+            Rhino.Geometry.Polyline rhinoPolyline = new Rhino.Geometry.Polyline(this.Count);
+
+            foreach (var p in this)
+                rhinoPolyline.Add(p.RhinoObject());
+
+            return rhinoPolyline;
+        }
+#endif
+
+        /// <summary>
+        /// Initializes a new empty polyline.
+        /// </summary>
+        public Polyline()
     {
     }
     /// <summary>

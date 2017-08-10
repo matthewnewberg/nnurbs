@@ -10,7 +10,7 @@ namespace NN.Geometry
     [Serializable]
     public class Extrusion : Surface
     {
-#if RHINO3DMIO || RHINOCOMMON|| RHINOCOMMON
+#if RHINO3DMIO || RHINOCOMMON
         public Extrusion(Rhino.Geometry.Extrusion f)
         {
             CopyFrom(f);

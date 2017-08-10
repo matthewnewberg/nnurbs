@@ -97,29 +97,29 @@ namespace NN.DocObjects
         /// <summary>
         /// Gets or sets the color of the thinner, less prominent line.
         /// </summary>
-        public System.Drawing.Color ThinLineColor { get; set; }
+        public ColorEx ThinLineColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the thicker, wider line.
         /// </summary>
-        public System.Drawing.Color ThickLineColor { get; set; }
+        public ColorEx ThickLineColor { get; set; }
 
 
         /// <summary>
         /// Gets or sets the color of the grid X-axis mark.
         /// </summary>
-        public System.Drawing.Color GridXColor { get; set; }
+        public ColorEx GridXColor { get; set; }
 
 
         /// <summary>
         /// Gets or sets the color of the grid Y-axis mark.
         /// </summary>
-        public System.Drawing.Color GridYColor { get; set; }
+        public ColorEx GridYColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the grid Z-axis mark.
         /// </summary>
-        public System.Drawing.Color GridZColor { get; set; }
+        public ColorEx GridZColor { get; set; }
     }
 
 
@@ -245,19 +245,19 @@ namespace NN.Render
         /// <summary>
         /// Gets or sets the ambient light color used in rendering.
         /// </summary>
-        public System.Drawing.Color AmbientLight { get; set; }
+        public ColorEx AmbientLight { get; set; }
 
 
         /// <summary>
         /// Gets or sets the background top color used in rendering.
         /// <para>Sets also the background color if a solid background color is set.</para>
         /// </summary>
-        public System.Drawing.Color BackgroundColorTop { get; set; }
+        public ColorEx BackgroundColorTop { get; set; }
 
         /// <summary>
         /// Gets or sets the background bottom color used in rendering.
         /// </summary>
-        public System.Drawing.Color BackgroundColorBottom { get; set; }
+        public ColorEx BackgroundColorBottom { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to render using lights that are on layers that are off.
@@ -390,7 +390,7 @@ namespace NN.FileIO
         public bool CopyFrom(Rhino.FileIO.File3dmSettings from)
         {
             this.ModelUrl = from.ModelUrl;
-            //		this.ModelBasepoint =  new NN.Geometry.Point3d(from.ModelBasepoint);
+            this.ModelBasepoint =  new NN.Geometry.Point3d(from.ModelBasepoint);
             this.ModelAbsoluteTolerance = from.ModelAbsoluteTolerance;
             this.ModelAngleToleranceRadians = from.ModelAngleToleranceRadians;
             this.ModelAngleToleranceDegrees = from.ModelAngleToleranceDegrees;
@@ -408,7 +408,7 @@ namespace NN.FileIO
         public bool CopyTo(Rhino.FileIO.File3dmSettings to)
         {
             to.ModelUrl = this.ModelUrl;
-            //		to.ModelBasepoint = this.ModelBasepoint;
+            to.ModelBasepoint = this.ModelBasepoint.RhinoObject();
             to.ModelAbsoluteTolerance = this.ModelAbsoluteTolerance;
             to.ModelAngleToleranceRadians = this.ModelAngleToleranceRadians;
             to.ModelAngleToleranceDegrees = this.ModelAngleToleranceDegrees;

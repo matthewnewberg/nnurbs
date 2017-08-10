@@ -9,6 +9,7 @@ Benefits
 - No pInvoke calls (and no slow downs associated with pInvoke)
 - SSE Vectorization 
 - Deserialize from XML
+- Serialize to light weight nncrv file
 
 
 #### Working
@@ -19,14 +20,16 @@ Benefits
     * LineCurve
     * ArcCurve
 * Meshes
+* Points
 
-Not completed or started
--------------------
+Not completed
+-------------
 * Surfaces
 * Breps
 * Points
 * Layers
 * Groups
+* PreviewMeshes
 * Other
  
 Author

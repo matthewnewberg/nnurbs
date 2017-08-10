@@ -1,9 +1,7 @@
-using System;
-using System.IO;
-using System.Collections.Generic;
-using NN.Geometry;
-using NN.Runtime.InteropWrappers;
 using NN.DocObjects;
+using NN.Geometry;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
@@ -17,238 +15,6 @@ namespace NN.FileIO
     /// </summary>
     public class File3dm
     {
-        // Helper Function
-        public static bool GeneratorCopyCode(object thisObject, object o, string objectNameTo, string objectNameFrom)
-        {
-            if (thisObject == null || o == null)
-                return false;
-
-
-            Uri exeUri = new Uri(thisObject.GetType().Assembly.CodeBase);
-
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(exeUri.LocalPath + "_" + thisObject.GetType().Name + "_" + o.GetType().Name + ".cs", false))
-            {
-                string className = o.GetType().FullName;
-
-                file.WriteLine("\tpublic bool CopyFrom(" + className + " " + objectNameFrom + ") {");
-                file.WriteLine("");
-                file.WriteLine("\t\tif (" + objectNameFrom + " == null)");
-                file.WriteLine("\t\t\treturn false;");
-                file.WriteLine("");
-
-                bool exception = false;
-
-                // Fields
-                foreach (var fieldInfo in o.GetType().GetFields())
-                {
-                    exception = false;
-
-                    string currentLine = "";
-                    object value = null;
-
-                    try
-                    {
-                        value = fieldInfo.GetValue(o);
-
-                        currentLine = "\t\t" + "this." + fieldInfo.Name + " = " + objectNameFrom + "." + fieldInfo.Name + ";";
-
-                        if (null != value)
-                        {
-                            FieldInfo thisField = thisObject.GetType().GetField(fieldInfo.Name);
-
-                            if (value.GetType().IsEnum)
-                            {
-                                currentLine = "\t\t" + "this." + fieldInfo.Name + " = " + "(" + thisField.FieldType.FullName + ") " + objectNameFrom + "." + fieldInfo.Name + ";";
-                            }
-
-                            if (thisField != null)
-                            {
-                                thisField.SetValue(thisObject, value);
-                            }
-                            else
-                            {
-                                currentLine += "// Missing This Prop";
-                                exception = true; // No prop to assign this value
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        // Round two 
-
-                        // Run  Copy Constructor
-
-                        try
-                        {
-                            FieldInfo thisField = thisObject.GetType().GetField(fieldInfo.Name);
-
-                            if (thisField != null)
-                            {
-                                currentLine = "\t\t" + "this." + fieldInfo.Name + " = " + " new " + thisField.FieldType + "(" + objectNameFrom + "." + fieldInfo.Name + ")" + ";";
-
-                                object newValue = Activator.CreateInstance(thisField.FieldType, value);
-
-                                thisField.SetValue(thisObject, newValue);
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            exception = true;
-                        }
-                    }
-
-                    if (!exception)
-                    {
-                        file.WriteLine(currentLine);
-                        //Console.WriteLine(currentLine);
-                    }
-                    else
-                    {
-                        file.WriteLine("//" + currentLine);
-                        //Console.WriteLine("//" + currentLine);
-                    }
-                }
-
-
-                // Properties
-                foreach (PropertyInfo propertyInfo in o.GetType().GetProperties())
-                {
-                    exception = false;
-
-                    string currentLine = "";
-                    object value = null;
-
-                    try
-                    {
-                        value = propertyInfo.GetValue(o, null);
-
-                        currentLine = "\t\t" + "this." + propertyInfo.Name + " = " + objectNameFrom + "." + propertyInfo.Name + ";";
-
-                        if (null != value)
-                        {
-                            PropertyInfo thisProp = thisObject.GetType().GetProperty(propertyInfo.Name);
-
-                            if (thisProp.GetAccessors(true)[0].IsStatic)
-                                continue;
-
-                            if (value.GetType().IsEnum)
-                            {
-                                currentLine = "\t\t" + "this." + propertyInfo.Name + " = " + "(" + thisProp.PropertyType.FullName + ") " + objectNameFrom + "." + propertyInfo.Name + ";";
-                            }
-
-                            if (thisProp != null)
-                            {
-                                thisProp.SetValue(thisObject, value, null);
-                            }
-                            else
-                            {
-                                currentLine += "// Missing This Prop";
-                                exception = true; // No prop to assign this value
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        // Round two 
-
-                        // Run  Copy Constructor
-
-                        try
-                        {
-                            PropertyInfo thisProp = thisObject.GetType().GetProperty(propertyInfo.Name);
-
-                            if (thisProp.GetAccessors(true)[0].IsStatic)
-                                continue;
-
-                            if (thisProp != null)
-                            {
-                                currentLine = "\t\t" + "this." + propertyInfo.Name + " = " + " new " + thisProp.PropertyType + "(" + objectNameFrom + "." + propertyInfo.Name + ")" + ";";
-
-                                object newValue = Activator.CreateInstance(thisProp.PropertyType, value);
-
-                                thisProp.SetValue(thisObject, newValue, null);
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            exception = true;
-                        }
-                    }
-
-                    if (!exception)
-                    {
-                        file.WriteLine(currentLine);
-                        //Console.WriteLine(currentLine);
-                    }
-                    else
-                    {
-                        file.WriteLine("//" + currentLine);
-                        //Console.WriteLine("//" + currentLine);
-                    }
-                }
-
-                file.WriteLine("\t\t return true;");
-
-                file.WriteLine("\t}");
-
-                file.WriteLine("");
-                file.WriteLine("");
-
-
-                file.WriteLine("\tpublic bool CopyTo(" + className + " " + objectNameTo + ") {");
-
-                foreach (PropertyInfo propertyInfo in o.GetType().GetProperties())
-                {
-                    string currentLine = "";
-                    object value = null;
-                    exception = false;
-
-                    try
-                    {
-                        value = propertyInfo.GetValue(o, null);
-
-                        currentLine = "\t\t" + objectNameTo + "." + propertyInfo.Name + " = " + "this." + propertyInfo.Name + ";";
-
-
-                        if (null != value)
-                        {
-                            PropertyInfo thisProp = thisObject.GetType().GetProperty(propertyInfo.Name);
-
-                            if (value.GetType().IsEnum)
-                            {
-                                currentLine = "\t\t" + objectNameTo + "." + propertyInfo.Name + " = " + "(" + propertyInfo.PropertyType.FullName + ") " + "this." + propertyInfo.Name + ";";
-                            }
-
-                            //if (thisProp != null)
-                            //    thisProp.SetValue(thisObject, value, null);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        // Console.WriteLine(e.ToString());
-                        exception = true;
-                    }
-
-                    if (!exception)
-                    {
-                        file.WriteLine(currentLine);
-                        //Console.WriteLine(currentLine);
-                    }
-                    else
-                    {
-                        file.WriteLine("//" + currentLine);
-                        //Console.WriteLine("//" + currentLine);
-                    }
-                }
-
-                file.WriteLine("\t return true;");
-
-                file.WriteLine("\t}");
-            }
-
-            return true;
-        }
-
         /// <summary></summary>
 
         [Flags]
@@ -473,7 +239,11 @@ namespace NN.FileIO
         {
             this.Objects = new File3dmObjectTable(doc);
 
-            // TODO Other settings
+
+            this.ApplicationName = Rhino.RhinoApp.Name;
+            this.Created = doc.DateCreated;
+            this.LastEdited = doc.DateLastEdited;
+            this.LastEditedBy = Rhino.RhinoApp.LicenseUserName;
         }
 #endif
 
@@ -489,7 +259,7 @@ namespace NN.FileIO
             this.Settings.CopyTo(to.Settings);
             this.Objects.CopyTo(to.Objects);
             this.Materials.CopyTo(to.Materials);
-            
+
             // TODO
             //to.Linetypes = this.Linetypes;
             //to.Layers = this.Layers;
@@ -510,19 +280,16 @@ namespace NN.FileIO
         }
 #endif
 
-
         public bool CopyFrom(Rhino.FileIO.File3dm from)
         {
-
-
             this.StartSectionComments = from.StartSectionComments;
-            		//this.Notes = from.Notes;
+            //this.Notes = from.Notes;
             this.ApplicationName = from.ApplicationName;
             this.ApplicationUrl = from.ApplicationUrl;
             this.ApplicationDetails = from.ApplicationDetails;
             this.CreatedBy = from.CreatedBy;
             this.LastEditedBy = from.LastEditedBy;
-            
+
             // TODO figure out why this is broken
             //this.Created = from.Created;
 
@@ -561,7 +328,7 @@ namespace NN.FileIO
         }
 
 
-#if RHINO3DMIO || RHINOCOMMON|| RHINOCOMMON
+#if RHINO3DMIO || RHINOCOMMON
         public File3dmWriteOptions(Rhino.FileIO.File3dmWriteOptions f)
         {
             CopyFrom(f);
@@ -696,6 +463,7 @@ namespace NN.FileIO
         [XmlElement(typeof(NN.Geometry.ArcCurve))]
         [XmlElement(typeof(NN.Geometry.Mesh))]
         [XmlElement(typeof(NN.Geometry.Extrusion))]
+        [XmlElement(typeof(NN.Geometry.Point))]
         public GeometryBase Geometry { get; set; }
 
         /// <summary>
@@ -820,6 +588,11 @@ namespace NN.FileIO
 
                 if (mesh != null)
                     to.Objects.AddMesh(mesh.RhinoObject(), rhinoAttrib);
+
+                var point = o.Geometry as Point;
+
+                if (point != null)
+                    to.Objects.AddPoint(point.RhinoObject().Location, rhinoAttrib);
             }
 
             return true;
@@ -827,7 +600,7 @@ namespace NN.FileIO
         }
 #endif
 
-            public bool CopyTo(Rhino.FileIO.File3dmObjectTable to)
+        public bool CopyTo(Rhino.FileIO.File3dmObjectTable to)
         {
 
 #if RHINO3DMIO
@@ -837,7 +610,7 @@ namespace NN.FileIO
 
             foreach (var o in this)
             {
-                Rhino.DocObjects.ObjectAttributes rhinoAttrib = o.Attributes.RhinoObject(); 
+                Rhino.DocObjects.ObjectAttributes rhinoAttrib = o.Attributes.RhinoObject();
 
                 // TODO
                 o.Attributes.CopyTo(rhinoAttrib);
@@ -855,7 +628,7 @@ namespace NN.FileIO
                 var nurbsSurface = o.Geometry as NurbsSurface;
                 if (nurbsSurface != null)
                     to.AddSurface(nurbsSurface.RhinoObject(), rhinoAttrib);
-                
+
                 var ext = o.Geometry as Extrusion;
 
                 if (ext != null)
@@ -893,13 +666,19 @@ namespace NN.FileIO
 
                 if (mesh != null)
                     to.AddMesh(mesh.RhinoObject(), rhinoAttrib);
+
+                var point = o.Geometry as Point;
+
+                if (point != null)
+                    to.AddPoint(point.RhinoObject().Location, rhinoAttrib);
+
             }
 
             return true;
         }
 #endif
 
-            readonly File3dm m_parent;
+        readonly File3dm m_parent;
         internal File3dmObjectTable(File3dm parent)
         {
             m_parent = parent;
@@ -961,7 +740,7 @@ namespace NN.FileIO
         }
 
         public File3dmMaterialTable() { }
-#if RHINO3DMIO || RHINOCOMMON|| RHINOCOMMON
+#if RHINO3DMIO || RHINOCOMMON
         public File3dmMaterialTable(IList<Rhino.DocObjects.Material> f)
         {
             CopyFrom(f);
@@ -1152,5 +931,164 @@ namespace NN.FileIO
 
         public bool NamedViews { get; set; }
 
+    }
+
+    /// <summary>
+    /// Single Curve
+    /// </summary>
+    // 
+    public class FileCurve
+    {
+        public FileCurve() { }
+
+#if RHINO3DMIO || RHINOCOMMON
+        public FileCurve(Rhino.FileIO.File3dm f)
+        {
+            CopyFrom(f);
+        }
+
+#if RHINOCOMMON
+        public FileCurve(Rhino.RhinoDoc doc)
+        {
+            List<Point4d> extraPoints = new List<Point4d>();
+            List<String> extraPointsName = new List<String>();
+            List<ColorEx> extraPointsColor = new List<ColorEx>();
+
+            foreach (var obj in doc.Objects)
+            {
+                if (obj.IsSelected(true) > 0)
+                {
+                    var pt = obj.Geometry as Rhino.Geometry.Point;
+
+                    if (pt != null)
+                    {
+                        extraPoints.Add(new Point4d(new Point3d(pt.Location)));
+                        if (obj.Attributes.Name != null)
+                            extraPointsName.Add(obj.Attributes.Name);
+                        else
+                            extraPointsName.Add("");
+
+                        extraPointsColor.Add(obj.Attributes.DrawColor(doc));
+                    }
+                }
+            }
+
+
+            if (extraPoints.Count > 0) { 
+                ExtraPoints = extraPoints;
+                ExtraPointsName = extraPointsName;
+                ExtraPointsColor = extraPointsColor;
+            }
+
+
+            foreach (var obj in doc.Objects)
+            {
+                if (obj.IsSelected(true) > 0)
+                {
+                    var crv = obj.Geometry as Rhino.Geometry.Curve;
+
+                    if (crv != null)
+                    {
+                        this.Curve = Curve.CreateCurve(crv);
+
+                        double length = crv.GetLength();
+
+                        var rhinoPolyLine = crv.ToPolyline(doc.ModelAbsoluteTolerance, doc.ModelAngleToleranceRadians, length / 1000, length / 10);
+
+                        if (rhinoPolyLine != null && rhinoPolyLine.PointCount > 0)
+                            this.PreviewPolyline = new Polyline(rhinoPolyLine.ToPolyline());
+
+
+                        this.Name = obj.Attributes.Name;
+                        this.DrawColor = obj.Attributes.DrawColor(doc);
+
+                        break;
+                    }
+                }
+            }
+
+            this.ApplicationName = Rhino.RhinoApp.Name;
+            this.CurveUnitSystem = (UnitSystem)doc.ModelUnitSystem;
+            this.LastEditedBy = Rhino.RhinoApp.LoggedInUserName;
+            this.LastEdited = DateTime.Today;
+
+            // TODO Preview Image
+
+        }
+#endif
+
+
+#if RHINOCOMMON
+        public bool AddTo(Rhino.RhinoDoc doc)
+        {
+            if (Curve == null)
+                return false;
+
+            var rhinoCurve = Curve.RhinoCurveObject();
+
+            if (rhinoCurve == null)
+                return false;
+
+            doc.Objects.Add(rhinoCurve);
+
+            if (ExtraPoints != null)
+            {
+                for (int i=0; i < ExtraPoints.Count; ++i)
+                {
+                    Point3d p = new Point3d(ExtraPoints[i]);
+
+                    Rhino.DocObjects.ObjectAttributes attrib = new Rhino.DocObjects.ObjectAttributes();
+
+                    if (ExtraPointsName != null && ExtraPointsName.Count > i)   
+                        attrib.Name = ExtraPointsName[i];
+                    
+                    if (ExtraPointsColor != null && ExtraPointsColor.Count > i)
+                    {
+                        attrib.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject;
+                        attrib.ObjectColor = ExtraPointsColor[i];
+                    }
+
+                    doc.Objects.AddPoint(p.RhinoObject(), attrib);
+
+                }
+            }
+
+            return true;
+        }
+#endif
+
+        public bool CopyFrom(Rhino.FileIO.File3dm from)
+        {
+            // TODO Convert the first curve to a NN curve
+
+            return true;
+        }
+#endif
+
+        [XmlElement(typeof(NN.Geometry.NurbsCurve))]
+        [XmlElement(typeof(NN.Geometry.PolyCurve))]
+        [XmlElement(typeof(NN.Geometry.PolylineCurve))]
+        [XmlElement(typeof(NN.Geometry.LineCurve))]
+        [XmlElement(typeof(NN.Geometry.ArcCurve))]
+        public Curve Curve { get; set; }
+        public Polyline PreviewPolyline { get; set; }
+        public ColorEx DrawColor { get; set; }
+        public String Name { get; set; }
+
+        public List<Point4d> ExtraPoints { get; set; }
+        public List<string> ExtraPointsName { get; set; }
+        public List<ColorEx> ExtraPointsColor { get; set; }
+
+        public UnitSystem CurveUnitSystem;
+
+        public string ApplicationName { get; set; }
+
+        /// <summary>
+        /// Gets a string that names the user who last edited the file.
+        /// </summary>
+        public string LastEditedBy { get; set; }
+        public DateTime LastEdited { get; set; }
+
+        public System.Drawing.Bitmap PreviewImage { get; set; }
     }
 }

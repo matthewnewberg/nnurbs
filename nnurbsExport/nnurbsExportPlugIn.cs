@@ -34,6 +34,7 @@ namespace nnurbsExport
         {
             var result = new Rhino.PlugIns.FileTypeList();
             result.AddFileType("Net Nurbs XML (*.nnxml)", "nnxml");
+            result.AddFileType("Net Nurbs Curve (*.nncrv)", "nncrv");
             return result;
         }
 
@@ -48,14 +49,35 @@ namespace nnurbsExport
         /// <returns>A value that defines success or a specific failure.</returns>
         protected override Rhino.PlugIns.WriteFileResult WriteFile(string filename, int index, RhinoDoc doc, Rhino.FileIO.FileWriteOptions options)
         {
-            NN.FileIO.File3dm nnmodel = new NN.FileIO.File3dm(doc);
-
-            var serializer = new XmlSerializer(nnmodel.GetType());
-            var xmlWriterSettings = new System.Xml.XmlWriterSettings() { Indent = true };
-            using (var writer = System.Xml.XmlWriter.Create(filename, xmlWriterSettings))
+            try
             {
-                serializer.Serialize(writer, nnmodel);
-                return Rhino.PlugIns.WriteFileResult.Success;
+                if (index == 0)
+                {
+                    NN.FileIO.File3dm nnmodel = new NN.FileIO.File3dm(doc);
+
+                    var serializer = new XmlSerializer(nnmodel.GetType());
+                    var xmlWriterSettings = new System.Xml.XmlWriterSettings() { Indent = true };
+                    using (var writer = System.Xml.XmlWriter.Create(filename, xmlWriterSettings))
+                    {
+                        serializer.Serialize(writer, nnmodel);
+                        return Rhino.PlugIns.WriteFileResult.Success;
+                    }
+
+                } else if (index == 1)
+                {
+                    NN.FileIO.FileCurve nncurve = new NN.FileIO.FileCurve(doc);
+
+                    var serializer = new XmlSerializer(nncurve.GetType());
+                    var xmlWriterSettings = new System.Xml.XmlWriterSettings() { Indent = true };
+                    using (var writer = System.Xml.XmlWriter.Create(filename, xmlWriterSettings))
+                    {
+                        serializer.Serialize(writer, nncurve);
+                        return Rhino.PlugIns.WriteFileResult.Success;
+                    }
+                }
+            } catch (Exception e)
+            {
+                RhinoApp.WriteLine(e.ToString());
             }
 
             return Rhino.PlugIns.WriteFileResult.Failure;

@@ -35,6 +35,7 @@ namespace nnurbsImport
         {
             var result = new Rhino.PlugIns.FileTypeList();
             result.AddFileType("Net Nurbs XML (*.nnxml)", "nnxml");
+            result.AddFileType("Net Nurbs Curve (*.nncrv)", "nncrv");
             return result;
         }
 
@@ -51,24 +52,46 @@ namespace nnurbsImport
         {
             bool read_success = false;
 
-            NN.FileIO.File3dm demodel;
-            // Construct an instance of the XmlSerializer with the type  
-            // of object that is being deserialized.  
-            XmlSerializer xmlSerializer =
-            new XmlSerializer(typeof(NN.FileIO.File3dm));
-            // To read the file, create a FileStream.  
-            using (FileStream myFileStream = new FileStream(filename, FileMode.Open)) { 
-            // Call the Deserialize method and cast to the object type.  
-            demodel = (NN.FileIO.File3dm)xmlSerializer.Deserialize(myFileStream);
-            }
-
-            Rhino.FileIO.File3dm fromXML = new Rhino.FileIO.File3dm();
-
-            if (demodel != null)
+            if (index == 0)
             {
-                read_success = demodel.AddTo(doc);
+                NN.FileIO.File3dm demodel;
+                // Construct an instance of the XmlSerializer with the type  
+                // of object that is being deserialized.  
+                XmlSerializer xmlSerializer =
+                new XmlSerializer(typeof(NN.FileIO.File3dm));
+                // To read the file, create a FileStream.  
+                using (FileStream fileStream = new FileStream(filename, FileMode.Open))
+                {
+                    // Call the Deserialize method and cast to the object type.  
+                    demodel = (NN.FileIO.File3dm)xmlSerializer.Deserialize(fileStream);
+                }
+
+                Rhino.FileIO.File3dm fromXML = new Rhino.FileIO.File3dm();
+
+                if (demodel != null)
+                {
+                    read_success = demodel.AddTo(doc);
+                }
+            } else if (index == 1)
+            {
+                NN.FileIO.FileCurve demodel;
+
+                XmlSerializer xmlSerializer =
+                new XmlSerializer(typeof(NN.FileIO.FileCurve));
+                // To read the file, create a FileStream.  
+                using (FileStream fileStream = new FileStream(filename, FileMode.Open))
+                {
+                    // Call the Deserialize method and cast to the object type.  
+                    demodel = (NN.FileIO.FileCurve)xmlSerializer.Deserialize(fileStream);
+                }
+
+                Rhino.FileIO.File3dm fromXML = new Rhino.FileIO.File3dm();
+
+                if (demodel != null)
+                {
+                    read_success = demodel.AddTo(doc);
+                }
             }
-            
 
             return read_success;
         }

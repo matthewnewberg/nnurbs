@@ -68,6 +68,7 @@
     <Compile Include="nn_box.cs" />
     <Compile Include="nn_brep.cs" />
     <Compile Include="nn_circle.cs" />
+    <Compile Include="nn_codegenhelper.cs" />
     <Compile Include="nn_color.cs" />
     <Compile Include="nn_cone.cs" />
     <Compile Include="nn_crc.cs" />
