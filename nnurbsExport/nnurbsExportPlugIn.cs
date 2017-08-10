@@ -53,7 +53,7 @@ namespace nnurbsExport
             {
                 if (index == 0)
                 {
-                    NN.FileIO.File3dm nnmodel = new NN.FileIO.File3dm(doc);
+                    NN.FileIO.File3dm nnmodel = new NN.FileIO.File3dm(doc, options.WriteSelectedObjectsOnly);
 
                     var serializer = new XmlSerializer(nnmodel.GetType());
                     var xmlWriterSettings = new System.Xml.XmlWriterSettings() { Indent = true };

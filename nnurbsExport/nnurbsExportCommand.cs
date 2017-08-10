@@ -4,6 +4,8 @@ using Rhino;
 using Rhino.Commands;
 using Rhino.Input;
 using Rhino.Input.Custom;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace nnurbsExport
 {
@@ -30,9 +32,72 @@ namespace nnurbsExport
 
         protected override Result RunCommand(RhinoDoc doc, RunMode mode)
         {
-            // Usually commands in export plug-ins are used to modify settings and behavior.
-            // The export work itself is performed by the nnurbsExportPlugIn class.
+            const Rhino.DocObjects.ObjectType geometryFilter = Rhino.DocObjects.ObjectType.AnyObject;
+         
+            bool json = false;
 
+            OptionToggle optionToggle = new OptionToggle(json, new Rhino.UI.LocalizeStringPair("XML", "XML"), new Rhino.UI.LocalizeStringPair("JSON", "JSON"));
+   
+
+            GetObject go = new GetObject();
+            go.SetCommandPrompt("Select object for information");
+            go.GeometryFilter = geometryFilter;
+            int output_idx = go.AddOptionToggle("Output", ref optionToggle);
+            go.GroupSelect = true;
+            go.SubObjectSelect = false;
+            go.EnableClearObjectsOnEntry(false);
+            go.EnableUnselectObjectsOnExit(false);
+            go.DeselectAllBeforePostSelect = false;
+
+            for (;;)
+            {
+                GetResult res = go.GetMultiple(1, 0);
+
+                if (res == GetResult.Option)
+                {
+                    go.EnablePreSelect(false, true);
+                    continue;
+                }
+
+                else if (res != GetResult.Object)
+                    return go.CommandResult();
+
+                break;
+            }
+
+            
+
+            NN.FileIO.File3dm nnmodel = new NN.FileIO.File3dm(doc, true);
+
+            string message = "";
+
+            if (optionToggle.CurrentValue)
+            {
+                using (StringWriter textWriter = new StringWriter())
+                {
+                    Newtonsoft.Json.JsonSerializer serializerJSON = new Newtonsoft.Json.JsonSerializer();
+                    serializerJSON.Serialize(textWriter, nnmodel);
+                    message = textWriter.ToString();
+                    dynamic parsedJson = Newtonsoft.Json.JsonConvert.DeserializeObject(message);
+                    message = Newtonsoft.Json.JsonConvert.SerializeObject(parsedJson, Newtonsoft.Json.Formatting.Indented);
+                }
+
+                Rhino.UI.Dialogs.ShowTextDialog(message, "JSON Information");
+            }
+            else
+            {
+                // XML
+                XmlSerializer xmlSerializer = new XmlSerializer(nnmodel.GetType());
+
+                using (StringWriter textWriter = new StringWriter())
+                {
+                    xmlSerializer.Serialize(textWriter, nnmodel);
+                    message = textWriter.ToString();
+                }
+
+                Rhino.UI.Dialogs.ShowTextDialog(message, "XML Information");
+            }
+            
             return Result.Success;
         }
     }

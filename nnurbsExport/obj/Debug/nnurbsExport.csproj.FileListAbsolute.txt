@@ -7,3 +7,5 @@ C:\Users\mnewb\Code\nnurbs\nnurbsExport\bin\nnurbs.pdb
 C:\Users\mnewb\Code\nnurbs\nnurbsExport\bin\System.Numerics.Vectors.xml
 C:\Users\mnewb\Code\nnurbs\nnurbsExport\obj\Debug\nnurbsExport.dll
 C:\Users\mnewb\Code\nnurbs\nnurbsExport\obj\Debug\nnurbsExport.pdb
+C:\Users\mnewb\Code\nnurbs\nnurbsExport\bin\Newtonsoft.Json.dll
+C:\Users\mnewb\Code\nnurbs\nnurbsExport\bin\Newtonsoft.Json.xml

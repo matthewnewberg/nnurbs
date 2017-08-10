@@ -6,3 +6,4 @@ C:\Users\mnewb\Code\nnurbs\nnurbs\obj\Debug\nnurbs.dll
 C:\Users\mnewb\Code\nnurbs\nnurbs\obj\Debug\nnurbs.pdb
 C:\Users\mnewb\Code\nnurbs\nnurbs\bin\Debug\RhinoCommon.dll
 C:\Users\mnewb\Code\nnurbs\nnurbs\bin\Debug\RhinoCommon.xml
+C:\Users\mnewb\Code\nnurbs\nnurbs\obj\Debug\nnurbs.csprojResolveAssemblyReference.cache

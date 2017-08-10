@@ -245,6 +245,17 @@ namespace NN.FileIO
             this.LastEdited = doc.DateLastEdited;
             this.LastEditedBy = Rhino.RhinoApp.LicenseUserName;
         }
+
+        public File3dm(Rhino.RhinoDoc doc, bool onlySelected)
+        {
+            this.Objects = new File3dmObjectTable(doc, true);
+
+
+            this.ApplicationName = Rhino.RhinoApp.Name;
+            this.Created = doc.DateCreated;
+            this.LastEdited = doc.DateLastEdited;
+            this.LastEditedBy = Rhino.RhinoApp.LicenseUserName;
+        }
 #endif
 
         public bool CopyTo(Rhino.FileIO.File3dm to)
@@ -511,6 +522,20 @@ namespace NN.FileIO
             foreach (var o in doc.Objects)
             {
                 this.Add(new File3dmObject(o));
+            }
+        }
+
+        public File3dmObjectTable(Rhino.RhinoDoc doc, bool onlySelected)
+        {
+            this.Clear();
+
+            foreach (var o in doc.Objects)
+            {
+                if (onlySelected && o.IsSelected(true) != 0)
+                    this.Add(new File3dmObject(o));
+
+                if (!onlySelected)
+                    this.Add(new File3dmObject(o));
             }
         }
 #endif
