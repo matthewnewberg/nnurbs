@@ -9,9 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>nnurbs</RootNamespace>
     <AssemblyName>nnurbs</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,21 +28,30 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;RHINO3DMIO</DefineConstants>
+    <DefineConstants>TRACE;RHINOCOMMON</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="RhinoCommon">
-      <HintPath>..\..\..\..\..\Program Files\Rhino WIP\System\RhinoCommon.dll</HintPath>
+    <Reference Include="Eto, Version=2.7.0.0, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.7.26.23009.7001\lib\net48\Eto.dll</HintPath>
+    </Reference>
+    <Reference Include="Eto.Wpf, Version=2.7.0.0, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoWindows.7.26.23009.7001\lib\net48\Eto.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.UI, Version=7.26.23009.7001, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.7.26.23009.7001\lib\net48\Rhino.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="RhinoCommon, Version=7.26.23009.7001, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.7.26.23009.7001\lib\net48\RhinoCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="RhinoWindows, Version=7.26.0.0, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoWindows.7.26.23009.7001\lib\net48\RhinoWindows.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>nnurbs\packages\System.Numerics.Vectors.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -165,4 +176,13 @@ xcopy /s /y "$(SolutionDir)nnurbs\nnurbs\packages\Rhino3dmIO.dll-AnyCPU-Windows.
 xcopy /s /y "$(SolutionDir)nnurbs\nnurbs\packages\Rhino3dmIO.dll-AnyCPU-Windows.5.1.30000.25\NativeBinaries\x64\*.*" "$(TargetDir)x64\"
 </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\RhinoCommon.7.26.23009.7001\build\net48\RhinoCommon.targets" Condition="Exists('..\packages\RhinoCommon.7.26.23009.7001\build\net48\RhinoCommon.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\RhinoCommon.7.26.23009.7001\build\net48\RhinoCommon.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\RhinoCommon.7.26.23009.7001\build\net48\RhinoCommon.targets'))" />
+    <Error Condition="!Exists('..\packages\RhinoWindows.7.26.23009.7001\build\net48\RhinoWindows.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\RhinoWindows.7.26.23009.7001\build\net48\RhinoWindows.targets'))" />
+  </Target>
+  <Import Project="..\packages\RhinoWindows.7.26.23009.7001\build\net48\RhinoWindows.targets" Condition="Exists('..\packages\RhinoWindows.7.26.23009.7001\build\net48\RhinoWindows.targets')" />
 </Project>
