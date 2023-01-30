@@ -269,7 +269,7 @@ namespace NN.FileIO
 
             this.Settings.CopyTo(to.Settings);
             this.Objects.CopyTo(to.Objects);
-            this.Materials.CopyTo(to.Materials);
+            this.Materials.CopyTo(to.AllMaterials);
 
             // TODO
             //to.Linetypes = this.Linetypes;
@@ -308,7 +308,7 @@ namespace NN.FileIO
             this.Revision = from.Revision;
             this.Settings = new NN.FileIO.File3dmSettings(from.Settings);
             this.Objects = new NN.FileIO.File3dmObjectTable(from.Objects);
-            this.Materials = new NN.FileIO.File3dmMaterialTable(from.Materials);
+            this.Materials = new NN.FileIO.File3dmMaterialTable(from.AllMaterials);
             //		this.Linetypes =  new NN.FileIO.File3dmLinetypeTable(from.Linetypes);
             //		this.Layers =  new NN.FileIO.File3dmLayerTable(from.Layers);
             //		this.DimStyles =  new NN.FileIO.File3dmDimStyleTable(from.DimStyles);
