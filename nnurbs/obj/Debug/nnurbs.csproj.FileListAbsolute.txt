@@ -7,3 +7,15 @@ C:\Users\mnewb\Code\nnurbs\nnurbs\obj\Debug\nnurbs.pdb
 C:\Users\mnewb\Code\nnurbs\nnurbs\bin\Debug\RhinoCommon.dll
 C:\Users\mnewb\Code\nnurbs\nnurbs\bin\Debug\RhinoCommon.xml
 C:\Users\mnewb\Code\nnurbs\nnurbs\obj\Debug\nnurbs.csprojResolveAssemblyReference.cache
+C:\Temp\Github\nnurbs\nnurbs\bin\Debug\nnurbs.dll
+C:\Temp\Github\nnurbs\nnurbs\bin\Debug\nnurbs.pdb
+C:\Temp\Github\nnurbs\nnurbs\bin\Debug\RhinoCommon.xml
+C:\Temp\Github\nnurbs\nnurbs\obj\Debug\nnurbs.csproj.AssemblyReference.cache
+C:\Temp\Github\nnurbs\nnurbs\obj\Debug\nnurbs.csproj.CoreCompileInputs.cache
+C:\Temp\Github\nnurbs\nnurbs\obj\Debug\nnurbs.csproj.CopyComplete
+C:\Temp\Github\nnurbs\nnurbs\obj\Debug\nnurbs.dll
+C:\Temp\Github\nnurbs\nnurbs\obj\Debug\nnurbs.pdb
+C:\Temp\Github\nnurbs\nnurbs\bin\Debug\Eto.dll
+C:\Temp\Github\nnurbs\nnurbs\bin\Debug\Rhino.UI.dll
+C:\Temp\Github\nnurbs\nnurbs\bin\Debug\RhinoCommon.dll
+C:\Temp\Github\nnurbs\nnurbs\bin\Debug\Eto.xml

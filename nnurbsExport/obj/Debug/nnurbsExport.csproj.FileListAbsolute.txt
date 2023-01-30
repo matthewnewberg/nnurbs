@@ -9,3 +9,14 @@ C:\Users\mnewb\Code\nnurbs\nnurbsExport\obj\Debug\nnurbsExport.dll
 C:\Users\mnewb\Code\nnurbs\nnurbsExport\obj\Debug\nnurbsExport.pdb
 C:\Users\mnewb\Code\nnurbs\nnurbsExport\bin\Newtonsoft.Json.dll
 C:\Users\mnewb\Code\nnurbs\nnurbsExport\bin\Newtonsoft.Json.xml
+C:\Temp\Github\nnurbs\nnurbsExport\obj\Debug\nnurbsExport.csproj.AssemblyReference.cache
+C:\Temp\Github\nnurbs\nnurbsExport\obj\Debug\nnurbsExport.csproj.CoreCompileInputs.cache
+C:\Temp\Github\nnurbs\nnurbsExport\obj\Debug\nnurbsExport.dll
+C:\Temp\Github\nnurbs\nnurbsExport\obj\Debug\nnurbsExport.pdb
+C:\Temp\Github\nnurbs\nnurbsExport\bin\nnurbsExport.dll
+C:\Temp\Github\nnurbs\nnurbsExport\bin\nnurbsExport.pdb
+C:\Temp\Github\nnurbs\nnurbsExport\bin\Newtonsoft.Json.dll
+C:\Temp\Github\nnurbs\nnurbsExport\bin\nnurbs.dll
+C:\Temp\Github\nnurbs\nnurbsExport\bin\nnurbs.pdb
+C:\Temp\Github\nnurbs\nnurbsExport\bin\Newtonsoft.Json.xml
+C:\Temp\Github\nnurbs\nnurbsExport\obj\Debug\nnurbsExport.csproj.CopyComplete

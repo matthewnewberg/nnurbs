@@ -32,15 +32,7 @@ Not completed
 * PreviewMeshes
 * Other
  
-Author
------
 
-Matthew Newberg - http://mattnewberg.info/ mnewberg@gmail.com
-
-
-Special Thanks
---------------
-McNeel - (http://www.mnceel.com/) for releasing Rhino3dmIO and OpenNurbs so this can be written. 
 
 
 

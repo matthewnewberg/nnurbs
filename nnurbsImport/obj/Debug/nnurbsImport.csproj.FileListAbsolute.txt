@@ -7,3 +7,12 @@ C:\Users\mnewb\Code\nnurbs\nnurbsImport\bin\nnurbs.dll
 C:\Users\mnewb\Code\nnurbs\nnurbsImport\bin\System.Numerics.Vectors.dll
 C:\Users\mnewb\Code\nnurbs\nnurbsImport\bin\nnurbs.pdb
 C:\Users\mnewb\Code\nnurbs\nnurbsImport\bin\System.Numerics.Vectors.xml
+C:\Temp\Github\nnurbs\nnurbsImport\obj\Debug\nnurbsImport.csproj.AssemblyReference.cache
+C:\Temp\Github\nnurbs\nnurbsImport\obj\Debug\nnurbsImport.csproj.CoreCompileInputs.cache
+C:\Temp\Github\nnurbs\nnurbsImport\obj\Debug\nnurbsImport.dll
+C:\Temp\Github\nnurbs\nnurbsImport\obj\Debug\nnurbsImport.pdb
+C:\Temp\Github\nnurbs\nnurbsImport\bin\nnurbsImport.dll
+C:\Temp\Github\nnurbs\nnurbsImport\bin\nnurbsImport.pdb
+C:\Temp\Github\nnurbs\nnurbsImport\bin\nnurbs.dll
+C:\Temp\Github\nnurbs\nnurbsImport\bin\nnurbs.pdb
+C:\Temp\Github\nnurbs\nnurbsImport\obj\Debug\nnurbsImport.csproj.CopyComplete
